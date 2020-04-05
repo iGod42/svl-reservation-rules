@@ -1,6 +1,6 @@
 import { IRule } from "../api"
 
-const { getFilterForSameUser } = require("./helpers")
+import { getFilterForSameUser } from "./helpers"
 
 const MESSAGE =
 	"Der Benutzer hat bereits zur selben Stunde auf einem anderen Platz eingetragen"
