@@ -1,4 +1,4 @@
-import { IRule } from "api/IRule"
+import { IRule } from "../api/IRule"
 
 export interface IRole {
 	id: string

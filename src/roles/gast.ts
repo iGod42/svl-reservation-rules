@@ -1,4 +1,4 @@
-import { IRole } from "api"
+import { IRole } from "../api"
 import { generalRules } from "./knownCombos"
 import {
 	noEntryPastHour,

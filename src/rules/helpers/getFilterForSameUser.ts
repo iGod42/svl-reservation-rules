@@ -1,4 +1,4 @@
-import { IReservation } from "api"
+import { IReservation } from "../../api"
 
 const fieldComparisons = ["Reserviert_von", "Spieler1", "Spieler2"]
 	.map((item, _index, all) => all.map(other => ({ item, other })))

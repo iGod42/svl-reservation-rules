@@ -1,5 +1,5 @@
 import { noOtherReservations as srv } from "./noOtherReservations"
-import { IReservation } from "api"
+import { IReservation } from "../api"
 import minReservation from "./MinReservation"
 
 describe("opening hours rule", () => {

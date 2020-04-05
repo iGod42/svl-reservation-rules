@@ -1,4 +1,4 @@
-import { IRule } from "api"
+import { IRule } from "../api"
 
 const { getFilterForSameUser } = require("./helpers")
 

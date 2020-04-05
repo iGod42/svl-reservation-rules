@@ -1,4 +1,4 @@
-import { IRule } from "api"
+import { IRule } from "../api"
 
 const MESSAGE =
 	"Eintragen nur zwischen 07:00 und 20:00 Uhr zur vollen Stunde möglich"

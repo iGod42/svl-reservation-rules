@@ -1,5 +1,5 @@
 import { userIsInIt as srv } from "./userIsInIt"
-import { IUser } from "api"
+import { IUser } from "../api"
 import minReservation from "./MinReservation"
 
 describe("user is in it rule", () => {

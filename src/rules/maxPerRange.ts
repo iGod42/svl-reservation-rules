@@ -1,6 +1,6 @@
 import { trimTimeComponent, addDays, getBeginningOfWeek } from "../tools"
 import { getFilterForSameUser } from "./helpers"
-import { IRule } from "api"
+import { IRule } from "../api"
 
 type MaxPerRangeOptions = {
 	dayRange: number | "EOW"
