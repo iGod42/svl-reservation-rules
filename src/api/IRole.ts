@@ -1,9 +1,9 @@
-import {IRule} from "api/IRule"
+import { IRule } from "api/IRule"
 
 export interface IRole {
-	id: string,
-	key: string,
-	name: string,
-	reservationCreationRules: IRule[],
+	id: string
+	key: string
+	name: string
+	reservationCreationRules: IRule[]
 	reservationCancellationRules?: IRule[]
 }

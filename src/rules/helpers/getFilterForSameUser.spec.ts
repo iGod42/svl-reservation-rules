@@ -1,4 +1,4 @@
-import {getFilterForSameUser as srv} from "./getFilterForSameUser"
+import { getFilterForSameUser as srv } from "./getFilterForSameUser"
 import minReservation from "../MinReservation"
 
 const basicDetails = {
@@ -15,27 +15,27 @@ const dummyReservation = {
 }
 
 describe("getFilterForSameUser", () => {
-		
-		const testCombo = (src_field, tgt_field) => {
-			it(`returns true if same ${src_field} is used as ${tgt_field}`, () => {
-				expect(srv(dummyReservation)({
+	const testCombo = (src_field, tgt_field) => {
+		it(`returns true if same ${src_field} is used as ${tgt_field}`, () => {
+			expect(
+				srv(dummyReservation)({
 					...basicDetails,
 					[tgt_field]: dummyReservation[src_field],
 					PlatzID: 2
-				})).toBeTruthy()
-			})
-		}
-		
-		testCombo("Reserviert_von", "Reserviert_von")
-		testCombo("Reserviert_von", "Spieler1")
-		testCombo("Reserviert_von", "Spieler2")
-		
-		testCombo("Spieler1", "Reserviert_von")
-		testCombo("Spieler1", "Spieler1")
-		testCombo("Spieler1", "Spieler2")
-		
-		testCombo("Spieler2", "Reserviert_von")
-		testCombo("Spieler2", "Spieler1")
-		testCombo("Spieler2", "Spieler2")
+				})
+			).toBeTruthy()
+		})
 	}
-)
+
+	testCombo("Reserviert_von", "Reserviert_von")
+	testCombo("Reserviert_von", "Spieler1")
+	testCombo("Reserviert_von", "Spieler2")
+
+	testCombo("Spieler1", "Reserviert_von")
+	testCombo("Spieler1", "Spieler1")
+	testCombo("Spieler1", "Spieler2")
+
+	testCombo("Spieler2", "Reserviert_von")
+	testCombo("Spieler2", "Spieler1")
+	testCombo("Spieler2", "Spieler2")
+})

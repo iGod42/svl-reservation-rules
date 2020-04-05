@@ -1,1 +1,1 @@
-export {getFilterForSameUser} from "./getFilterForSameUser"
+export { getFilterForSameUser } from "./getFilterForSameUser"

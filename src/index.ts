@@ -1,1 +1,1 @@
-export {ReservationRules} from "./ReservationRules"
+export { ReservationRules } from "./ReservationRules"

@@ -1,5 +1,5 @@
-import {generalRules, standardUserRules, redGreen} from "./knownCombos"
-import {userIsInIt} from "../rules"
+import { generalRules, standardUserRules, redGreen } from "./knownCombos"
+import { userIsInIt } from "../rules"
 
 export const RM = {
 	id: "R",
@@ -10,7 +10,5 @@ export const RM = {
 		...standardUserRules,
 		...redGreen
 	],
-	reservationCancellationRules: [
-		userIsInIt
-	]
+	reservationCancellationRules: [userIsInIt]
 }

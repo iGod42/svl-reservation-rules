@@ -1,6 +1,6 @@
-import {IRole} from "../api"
-import {generalRules} from "./knownCombos"
-import {noEntryAfterWeek, noEntryBefore} from "../rules"
+import { IRole } from "../api"
+import { generalRules } from "./knownCombos"
+import { noEntryAfterWeek, noEntryBefore } from "../rules"
 
 export const RA: IRole = {
 	id: "A",

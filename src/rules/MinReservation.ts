@@ -1,4 +1,4 @@
-import {IReservation} from "../api"
+import { IReservation } from "../api"
 
 const minReservation: IReservation = {
 	Stunde: new Date(2019, 10, 10),

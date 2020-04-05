@@ -1,5 +1,9 @@
-import {noEntryBefore, noDoubleCortReservations, noEntryAfterWeek} from "../../rules"
-import {IRule} from "api"
+import {
+	noEntryBefore,
+	noDoubleCortReservations,
+	noEntryAfterWeek
+} from "../../rules"
+import { IRule } from "api"
 
 export const standardUserRules: IRule[] = [
 	noEntryBefore(), // no entries after current hour has started

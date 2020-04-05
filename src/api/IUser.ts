@@ -1,4 +1,4 @@
 export interface IUser {
-	RolleID: string,
+	RolleID: string
 	BenutzerID: string
 }

@@ -1,6 +1,11 @@
-import {generalRules} from "./knownCombos"
-import {noEntryBefore, noEntryAfterWeek, limitToCourts, userIsInIt} from "../rules"
-import {IRole} from "../api"
+import { generalRules } from "./knownCombos"
+import {
+	noEntryBefore,
+	noEntryAfterWeek,
+	limitToCourts,
+	userIsInIt
+} from "../rules"
+import { IRole } from "../api"
 
 export const TR: IRole = {
 	id: "T",
@@ -12,7 +17,5 @@ export const TR: IRole = {
 		noEntryAfterWeek(1),
 		limitToCourts([5], 17, [1, 2, 3, 4, 5]) // Mo-Fr nach 17: nur mehr platz 5
 	],
-	reservationCancellationRules: [
-		userIsInIt
-	]
+	reservationCancellationRules: [userIsInIt]
 }

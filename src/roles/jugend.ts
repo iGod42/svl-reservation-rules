@@ -1,6 +1,6 @@
-import {IRole} from "../api"
-import {standardUserRules, generalRules, redGreen} from "./knownCombos"
-import {noEntryPastHour, userIsInIt} from "../rules"
+import { IRole } from "../api"
+import { standardUserRules, generalRules, redGreen } from "./knownCombos"
+import { noEntryPastHour, userIsInIt } from "../rules"
 
 export const JU: IRole = {
 	id: "J",
@@ -12,7 +12,5 @@ export const JU: IRole = {
 		noEntryPastHour(17, [1, 2, 3, 4, 5]),
 		...redGreen
 	],
-	reservationCancellationRules: [
-		userIsInIt
-	]
+	reservationCancellationRules: [userIsInIt]
 }

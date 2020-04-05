@@ -1,7 +1,4 @@
-import {ensureOpeningHours, noOtherReservations} from '../../rules'
-import {IRule} from '../../api'
+import { ensureOpeningHours, noOtherReservations } from "../../rules"
+import { IRule } from "../../api"
 
-export const generalRules: IRule[] = [
-	ensureOpeningHours,
-	noOtherReservations
-]
+export const generalRules: IRule[] = [ensureOpeningHours, noOtherReservations]
