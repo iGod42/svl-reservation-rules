@@ -30,7 +30,7 @@ export class ReservationRules {
 
 	canReserve(user: IUser, reservation: IReservation) {
 		const userRole = roles[user.RolleID]
-		const monday = getBeginningOfWeek(new Date())
+		const monday = getBeginningOfWeek(reservation.Stunde)
 
 		// this'd have to be adapted to validate more than the green red rules, but should be good enough for now
 		return this._reservationProvider(
