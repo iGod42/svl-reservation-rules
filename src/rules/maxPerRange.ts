@@ -74,9 +74,9 @@ export const maxPerRange = (
 		.filter(res => options.applyToWeekdays.includes(res.hour.getDay()))
 		.length < maximum
 		? false
-		: `Maximum number of reservations between ${startDate} and ${endDate} from ${
+		: `Maximale reservierungen zwischen ${startDate} und ${endDate} von ${
 				options.startAtHour
-		  } to ${options.endAtHour} on weekdays ${JSON.stringify(
+		  } bis ${options.endAtHour} an Wochentagen ${JSON.stringify(
 				options.applyToWeekdays
-		  )} exceeded`
+		  )} überschritten`
 }

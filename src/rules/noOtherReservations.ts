@@ -1,6 +1,6 @@
 import { IRule } from "../api"
 
-const MESSAGE = "Die hour wurde bereits reserviert!"
+const MESSAGE = "Die Stunde wurde bereits reserviert!"
 
 export const noOtherReservations: IRule = (
 	reservation,

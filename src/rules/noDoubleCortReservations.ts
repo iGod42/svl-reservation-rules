@@ -3,7 +3,7 @@ import { IRule } from "../api"
 import { getFilterForSameUser } from "./helpers"
 
 const MESSAGE =
-	"Der Benutzer hat bereits zur selben hour auf einem anderen Platz eingetragen"
+	"Der Benutzer hat bereits zur selben Stunde auf einem anderen Platz eingetragen"
 
 export const noDoubleCortReservations: IRule = (reservation, allReservations) =>
 	// find all reservations at the same hour but at a different court

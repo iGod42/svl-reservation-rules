@@ -14,7 +14,7 @@ export const limitToCourts = (
 
 	if (std.getHours() < hour) return false
 
-	return `Keine Reservierung von Platz${court}${
+	return `Keine Reservierung von Platz ${court}${
 		hour > 0 ? ` nach ${hour} Uhr` : ""
 	} erlaubt`
 }
