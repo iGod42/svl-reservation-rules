@@ -3,39 +3,44 @@ import minReservation from "../MinReservation"
 
 const basicDetails = {
 	...minReservation,
-	Stunde: new Date(2019, 10, 10)
+	courtId: 1,
+	hour: new Date(2019, 10, 10)
 }
 
 const dummyReservation = {
 	...basicDetails,
-	PlatzID: 1,
-	Reserviert_von: "rv",
-	Spieler1: "s1",
-	Spieler2: "s2"
+	reservedBy: {
+		id: "rv",
+		roleId: "R"
+	},
+	players: [
+		{ id: "as1" },
+		{ id: "as2" }
+	]
 }
 
 describe("getFilterForSameUser", () => {
-	const testCombo = (src_field, tgt_field) => {
-		it(`returns true if same ${src_field} is used as ${tgt_field}`, () => {
-			expect(
-				srv(dummyReservation)({
-					...basicDetails,
-					[tgt_field]: dummyReservation[src_field],
-					PlatzID: 2
-				})
-			).toBeTruthy()
-		})
-	}
-
-	testCombo("Reserviert_von", "Reserviert_von")
-	testCombo("Reserviert_von", "Spieler1")
-	testCombo("Reserviert_von", "Spieler2")
-
-	testCombo("Spieler1", "Reserviert_von")
-	testCombo("Spieler1", "Spieler1")
-	testCombo("Spieler1", "Spieler2")
-
-	testCombo("Spieler2", "Reserviert_von")
-	testCombo("Spieler2", "Spieler1")
-	testCombo("Spieler2", "Spieler2")
+	it("returns true if aReservedBy is bReserved by", () => {
+		expect(srv(dummyReservation)({
+			...basicDetails,
+			reservedBy: { ...dummyReservation.reservedBy }
+		})).toBeTruthy()
+	})
+	it("returns true if aReserved is in bPlayers", () => {
+		expect(srv(dummyReservation)({
+			...basicDetails,
+			players: [{ ...dummyReservation.reservedBy }]
+		})).toBeTruthy()
+	})
+	it("returns true if an aPlayer is in bPlayers", () => {
+		expect(srv(dummyReservation)({
+			...basicDetails,
+			players: [{ ...dummyReservation.players[0] }]
+		})).toBeTruthy()
+	})
+	it("returns false if there is no overlap", () => {
+		expect(srv(dummyReservation)({
+			...basicDetails
+		})).toBeFalsy()
+	})
 })

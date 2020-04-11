@@ -4,7 +4,7 @@ import minReservation from "./MinReservation"
 
 describe("user is in it rule", () => {
 	const userName = "dummyXYZ"
-	const theUser: IUser = { RolleID: "RM", BenutzerID: userName }
+	const theUser: IUser = { roleId: "RM", id: userName }
 	const distinctiveOtherReservation = minReservation
 
 	it("fails if user is not in the reservation", () => {
@@ -17,31 +17,19 @@ describe("user is in it rule", () => {
 			srv(
 				{
 					...distinctiveOtherReservation,
-					Reserviert_von: userName
+					reservedBy: { id: userName, roleId: "R" }
 				},
 				undefined,
 				theUser
 			)
 		).toBeFalsy()
 	})
-	it("works if user is player 1", () => {
+	it("works if user is players", () => {
 		expect(
 			srv(
 				{
 					...distinctiveOtherReservation,
-					Spieler1: userName
-				},
-				undefined,
-				theUser
-			)
-		).toBeFalsy()
-	})
-	it("works if user is palyer 2", () => {
-		expect(
-			srv(
-				{
-					...distinctiveOtherReservation,
-					Spieler2: userName
+					players: [{ id: userName }]
 				},
 				undefined,
 				theUser

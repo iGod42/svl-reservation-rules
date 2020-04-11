@@ -1,10 +1,10 @@
 import { IRule } from "../api"
 
 const MESSAGE =
-	"Eintragen nur zwischen 07:00 und 20:00 Uhr zur vollen Stunde möglich"
+	"Eintragen nur zwischen 07:00 und 20:00 Uhr zur vollen hour möglich"
 
 export const ensureOpeningHours: IRule = reservation => {
-	const date = reservation.Stunde
+	const date = reservation.hour
 	if (
 		date.getHours() > 7 &&
 		date.getHours() < 21 &&

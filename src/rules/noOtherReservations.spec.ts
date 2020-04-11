@@ -5,8 +5,8 @@ import minReservation from "./MinReservation"
 describe("opening hours rule", () => {
 	const reservationDummy: IReservation = {
 		...minReservation,
-		Stunde: new Date(2019, 10, 10),
-		PlatzID: 1
+		hour: new Date(2019, 10, 10),
+		courtId: 1
 	}
 
 	it("returns a message if there's a reservation at the same time and court", () => {
@@ -17,7 +17,7 @@ describe("opening hours rule", () => {
 			srv(reservationDummy, [
 				{
 					...reservationDummy,
-					PlatzID: 3
+					courtId: 3
 				}
 			])
 		).toBeFalsy()
@@ -27,7 +27,7 @@ describe("opening hours rule", () => {
 			srv(reservationDummy, [
 				{
 					...reservationDummy,
-					Stunde: new Date(2019, 10, 10, 1, 0, 0, 0)
+					hour: new Date(2019, 10, 10, 1, 0, 0, 0)
 				}
 			])
 		).toBeFalsy()

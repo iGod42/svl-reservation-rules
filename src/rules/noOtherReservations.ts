@@ -1,6 +1,6 @@
 import { IRule } from "../api"
 
-const MESSAGE = "Die Stunde wurde bereits reserviert!"
+const MESSAGE = "Die hour wurde bereits reserviert!"
 
 export const noOtherReservations: IRule = (
 	reservation,
@@ -11,8 +11,8 @@ export const noOtherReservations: IRule = (
 
 	return existingReservations.find(
 		er =>
-			er.Stunde.getTime() === reservation.Stunde.getTime() &&
-			er.PlatzID === reservation.PlatzID
+			er.hour.getTime() === reservation.hour.getTime() &&
+			er.courtId === reservation.courtId
 	)
 		? MESSAGE
 		: false

@@ -45,7 +45,7 @@ export const maxPerRange = (
 	}
 
 	const today = trimTimeComponent(
-		options.startAtReservationDay ? reservation.Stunde : options.today
+		options.startAtReservationDay ? reservation.hour : options.today
 	)
 	const eow = options.dayRange === "EOW"
 	const startDate = addDays(today, options.dayOffset)
@@ -55,10 +55,10 @@ export const maxPerRange = (
 		? addDays(getBeginningOfWeek(today), 7)
 		: addDays(startDate, options.dayRange as number)
 
-	if (reservation.Stunde < startDate || reservation.Stunde >= endDate)
+	if (reservation.hour < startDate || reservation.hour >= endDate)
 		return false
 
-	const hour = reservation.Stunde.getHours()
+	const hour = reservation.hour.getHours()
 	if (hour < options.startAtHour || hour >= options.endAtHour) return false
 
 	const sameUserFilter = !options.limitForUser
@@ -67,11 +67,11 @@ export const maxPerRange = (
 
 	return (allReservations || [])
 		.filter(sameUserFilter)
-		.filter(res => res.Stunde >= startDate)
-		.filter(res => res.Stunde < endDate)
-		.filter(res => res.Stunde.getHours() >= options.startAtHour)
-		.filter(res => res.Stunde.getHours() < options.endAtHour)
-		.filter(res => options.applyToWeekdays.includes(res.Stunde.getDay()))
+		.filter(res => res.hour >= startDate)
+		.filter(res => res.hour < endDate)
+		.filter(res => res.hour.getHours() >= options.startAtHour)
+		.filter(res => res.hour.getHours() < options.endAtHour)
+		.filter(res => options.applyToWeekdays.includes(res.hour.getDay()))
 		.length < maximum
 		? false
 		: `Maximum number of reservations between ${startDate} and ${endDate} from ${

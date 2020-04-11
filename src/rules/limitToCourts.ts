@@ -5,8 +5,8 @@ export const limitToCourts = (
 	hour = 0,
 	weekDays = [0, 1, 2, 3, 4, 5, 6]
 ): IRule => reservation => {
-	const std = reservation.Stunde
-	const court = reservation.PlatzID
+	const std = reservation.hour
+	const court = reservation.courtId
 
 	if (!weekDays.includes(std.getDay())) return false
 

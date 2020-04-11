@@ -5,7 +5,7 @@ import minReservation from "./MinReservation"
 describe("no entry after week rule", () => {
 	describe("called with no week offset", () => {
 		const theSrv = srv()
-		const testDate = date => theSrv({ ...minReservation, Stunde: date })
+		const testDate = date => theSrv({ ...minReservation, hour: date })
 
 		it("rejects entries that are on the next Monday", () => {
 			expect(typeof testDate(addDays(getBeginningOfWeek(new Date()), 7))).toBe(
@@ -23,7 +23,7 @@ describe("no entry after week rule", () => {
 	describe("called with week offset", () => {
 		const weekOffset = 1
 		const theSrv = srv(weekOffset)
-		const testDate = date => theSrv({ ...minReservation, Stunde: date })
+		const testDate = date => theSrv({ ...minReservation, hour: date })
 
 		it("rejects entries that are further away than Monday after the offset week", () => {
 			expect(

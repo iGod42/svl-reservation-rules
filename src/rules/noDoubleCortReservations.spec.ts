@@ -4,15 +4,14 @@ import minReservation from "./MinReservation"
 describe("no reservations on another court rule", () => {
 	const basicDetails = {
 		...minReservation,
-		Stunde: new Date(2019, 10, 10)
+		hour: new Date(2019, 10, 10)
 	}
 
 	const dummyReservation = {
 		...basicDetails,
-		PlatzID: 1,
-		Reserviert_von: "rv",
-		Spieler1: "s1",
-		Spieler2: "s2"
+		courtId: 1,
+		reservedBy: { id: "rv", roleId: "R" },
+		players: [{ id: "s1" }, { id: "s2" }]
 	}
 
 	it("returns falsely if all other people are used", () => {
@@ -20,10 +19,9 @@ describe("no reservations on another court rule", () => {
 			srv(dummyReservation, [
 				{
 					...basicDetails,
-					PlatzID: 2,
-					Reserviert_von: "not_it",
-					Spieler1: "also_not_it",
-					Spieler2: "still not it"
+					courtId: 2,
+					reservedBy: { id: "not_it", roleId: "R" },
+					players: [{ id: "also_not_it" }, { id: "not" }]
 				}
 			])
 		).toBeFalsy()
@@ -34,36 +32,12 @@ describe("no reservations on another court rule", () => {
 			srv(dummyReservation, [
 				{
 					...dummyReservation,
-					PlatzID: 2,
-					Stunde: new Date(2019, 10, 10, 10, 0, 0, 0)
+					courtId: 2,
+					hour: new Date(2019, 10, 10, 10, 0, 0, 0)
 				}
 			])
 		).toBeFalsy()
 	})
 
-	const testCombo = (src_field, tgt_field) => {
-		it(`retruns message if same ${src_field} is used as ${tgt_field}`, () => {
-			expect(
-				typeof srv(dummyReservation, [
-					{
-						...basicDetails,
-						[tgt_field]: dummyReservation[src_field],
-						PlatzID: 2
-					}
-				])
-			).toBe("string")
-		})
-	}
-
-	testCombo("Reserviert_von", "Reserviert_von")
-	testCombo("Reserviert_von", "Spieler1")
-	testCombo("Reserviert_von", "Spieler2")
-
-	testCombo("Spieler1", "Reserviert_von")
-	testCombo("Spieler1", "Spieler1")
-	testCombo("Spieler1", "Spieler2")
-
-	testCombo("Spieler2", "Reserviert_von")
-	testCombo("Spieler2", "Spieler1")
-	testCombo("Spieler2", "Spieler2")
+	// maybe add a test if getFilter for same user is used?
 })

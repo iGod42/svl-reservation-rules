@@ -9,7 +9,7 @@ describe("no entry past hour", () => {
 		date = new Date(2019, 10, 10)
 	): IReservation => ({
 		...minReservation,
-		Stunde: new Date(
+		hour: new Date(
 			date.getFullYear(),
 			date.getMonth(),
 			date.getDate(),

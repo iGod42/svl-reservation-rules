@@ -17,7 +17,7 @@ export class ReservationRules {
 		user: IUser,
 		delReservation: IReservation
 	): Promise<Array<string | false>> {
-		const userRole: IRole = roles[user.RolleID]
+		const userRole: IRole = roles[user.roleId]
 
 		const rules = userRole?.reservationCancellationRules || [
 			_reservation => false
@@ -29,8 +29,8 @@ export class ReservationRules {
 	}
 
 	canReserve(user: IUser, reservation: IReservation) {
-		const userRole = roles[user.RolleID]
-		const monday = getBeginningOfWeek(reservation.Stunde)
+		const userRole = roles[user.roleId]
+		const monday = getBeginningOfWeek(reservation.hour)
 
 		// this'd have to be adapted to validate more than the green red rules, but should be good enough for now
 		return this._reservationProvider(

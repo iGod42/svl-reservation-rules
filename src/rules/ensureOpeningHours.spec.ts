@@ -15,13 +15,13 @@ describe("opening hours rule", () => {
 		)
 	}
 	it("accepts times between 7:00 and 20:00", () => {
-		expect(srv({ ...minReservation, Stunde: getDate(10) })).toBeFalsy()
+		expect(srv({ ...minReservation, hour: getDate(10) })).toBeFalsy()
 	})
 	it("rejects times between 7:00 and 20:00 that are not at 00:00", () => {
 		expect(
 			typeof srv({
 				...minReservation,
-				Stunde: getDate(10, 20)
+				hour: getDate(10, 20)
 			})
 		).toBe("string")
 	})
@@ -29,7 +29,7 @@ describe("opening hours rule", () => {
 		expect(
 			typeof srv({
 				...minReservation,
-				Stunde: getDate(4)
+				hour: getDate(4)
 			})
 		).toBe("string")
 	})
@@ -37,7 +37,7 @@ describe("opening hours rule", () => {
 		expect(
 			typeof srv({
 				...minReservation,
-				Stunde: getDate(22)
+				hour: getDate(22)
 			})
 		).toBe("string")
 	})

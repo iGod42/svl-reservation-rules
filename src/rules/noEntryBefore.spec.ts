@@ -8,7 +8,7 @@ describe("opening hours rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					Stunde: new Date()
+					hour: new Date()
 				})
 			).toBe("string")
 		})
@@ -16,7 +16,7 @@ describe("opening hours rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					Stunde: new Date(2000, 0, 0)
+					hour: new Date(2000, 0, 0)
 				})
 			).toBe("string")
 		})
@@ -25,7 +25,7 @@ describe("opening hours rule", () => {
 			expect(
 				theSrv({
 					...minReservation,
-					Stunde: new Date(
+					hour: new Date(
 						now.getFullYear(),
 						now.getMonth(),
 						now.getDate(),
@@ -46,7 +46,7 @@ describe("opening hours rule", () => {
 			expect(
 				theSrv({
 					...minReservation,
-					Stunde: new Date(
+					hour: new Date(
 						now.getFullYear(),
 						now.getMonth(),
 						now.getDate(),
@@ -61,7 +61,7 @@ describe("opening hours rule", () => {
 		it("returns falsely if res is past the offset date", () => {
 			const theDate = new Date()
 			theDate.setDate(theDate.getDate() - testOffset + 2)
-			expect(theSrv({ ...minReservation, Stunde: theDate })).toBeFalsy()
+			expect(theSrv({ ...minReservation, hour: theDate })).toBeFalsy()
 		})
 		it("returns a message if the date is before the offset date", () => {
 			const theDate = new Date()
@@ -69,7 +69,7 @@ describe("opening hours rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					Stunde: theDate
+					hour: theDate
 				})
 			).toBe("string")
 		})

@@ -21,8 +21,8 @@ describe("limit to courts rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					PlatzID: 1,
-					Stunde: new Date()
+					courtId: 1,
+					hour: new Date()
 				})
 			).toBe("string")
 		})
@@ -30,8 +30,8 @@ describe("limit to courts rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					PlatzID: 2,
-					Stunde: new Date()
+					courtId: 2,
+					hour: new Date()
 				})
 			).toBe("string")
 		})
@@ -39,8 +39,8 @@ describe("limit to courts rule", () => {
 			expect(
 				theSrv({
 					...minReservation,
-					PlatzID: 3333,
-					Stunde: new Date()
+					courtId: 3333,
+					hour: new Date()
 				})
 			).toBeFalsy()
 		})
@@ -54,8 +54,8 @@ describe("limit to courts rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					PlatzID: 1,
-					Stunde: getDate(cutoffTime)
+					courtId: 1,
+					hour: getDate(cutoffTime)
 				})
 			).toBe("string")
 		})
@@ -63,8 +63,8 @@ describe("limit to courts rule", () => {
 			expect(
 				typeof theSrv({
 					...minReservation,
-					PlatzID: 1,
-					Stunde: getDate(cutoffTime + 1)
+					courtId: 1,
+					hour: getDate(cutoffTime + 1)
 				})
 			).toBe("string")
 		})
@@ -72,8 +72,8 @@ describe("limit to courts rule", () => {
 			expect(
 				theSrv({
 					...minReservation,
-					PlatzID: 1,
-					Stunde: getDate(cutoffTime - 1)
+					courtId: 1,
+					hour: getDate(cutoffTime - 1)
 				})
 			).toBeFalsy()
 		})
@@ -87,8 +87,8 @@ describe("limit to courts rule", () => {
 			expect(
 				theSrv({
 					...minReservation,
-					PlatzID: 1,
-					Stunde: exampleTuesday
+					courtId: 1,
+					hour: exampleTuesday
 				})
 			)
 		})
@@ -96,8 +96,8 @@ describe("limit to courts rule", () => {
 			expect(
 				theSrv({
 					...minReservation,
-					PlatzID: 1,
-					Stunde: exampleMonday
+					courtId: 1,
+					hour: exampleMonday
 				})
 			)
 		})

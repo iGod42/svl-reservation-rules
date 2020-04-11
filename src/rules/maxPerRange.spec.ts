@@ -28,7 +28,7 @@ describe("max per range Rule", () => {
 				theSrv(
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					[]
 				)
@@ -39,12 +39,12 @@ describe("max per range Rule", () => {
 				theSrv(
 					{
 						...minReservation,
-						Stunde: addDays(new Date(aMonday), 1)
+						hour: addDays(new Date(aMonday), 1)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: new Date(aMonday)
+							hour: new Date(aMonday)
 						}
 					]
 				)
@@ -55,12 +55,12 @@ describe("max per range Rule", () => {
 				typeof theSrv(
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: new Date(aMonday)
+							hour: new Date(aMonday)
 						}
 					]
 				)
@@ -68,20 +68,20 @@ describe("max per range Rule", () => {
 		})
 		it("accepts ignores reservations that are yesterday", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(aMonday) }, [
+				theSrv({ ...minReservation, hour: new Date(aMonday) }, [
 					{
 						...minReservation,
-						Stunde: addDays(new Date(aMonday), -1)
+						hour: addDays(new Date(aMonday), -1)
 					}
 				])
 			).toBeFalsy()
 		})
 		it("accepts ignores reservations that are tomorrow", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(aMonday) }, [
+				theSrv({ ...minReservation, hour: new Date(aMonday) }, [
 					{
 						...minReservation,
-						Stunde: addDays(new Date(aMonday), 1)
+						hour: addDays(new Date(aMonday), 1)
 					}
 				])
 			).toBeFalsy()
@@ -99,7 +99,7 @@ describe("max per range Rule", () => {
 				theSrv(
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					[]
 				)
@@ -107,10 +107,10 @@ describe("max per range Rule", () => {
 		})
 		it("works if is one reservation today", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(aMonday) }, [
+				theSrv({ ...minReservation, hour: new Date(aMonday) }, [
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					}
 				])
 			).toBeFalsy()
@@ -120,14 +120,14 @@ describe("max per range Rule", () => {
 				typeof theSrv(
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: new Date(aMonday)
+							hour: new Date(aMonday)
 						},
-						{ ...minReservation, Stunde: new Date(aMonday) }
+						{ ...minReservation, hour: new Date(aMonday) }
 					]
 				)
 			).toBe("string")
@@ -137,16 +137,16 @@ describe("max per range Rule", () => {
 				typeof theSrv(
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: new Date(aMonday)
+							hour: new Date(aMonday)
 						},
 						{
 							...minReservation,
-							Stunde: addDays(new Date(aMonday), 1)
+							hour: addDays(new Date(aMonday), 1)
 						}
 					]
 				)
@@ -154,28 +154,28 @@ describe("max per range Rule", () => {
 		})
 		it("ignores reservations after tomorrow", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(aMonday) }, [
+				theSrv({ ...minReservation, hour: new Date(aMonday) }, [
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					{
 						...minReservation,
-						Stunde: addDays(new Date(aMonday), 2)
+						hour: addDays(new Date(aMonday), 2)
 					}
 				])
 			).toBeFalsy()
 		})
 		it("ignores reservations before today", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(aMonday) }, [
+				theSrv({ ...minReservation, hour: new Date(aMonday) }, [
 					{
 						...minReservation,
-						Stunde: new Date(aMonday)
+						hour: new Date(aMonday)
 					},
 					{
 						...minReservation,
-						Stunde: addDays(new Date(aMonday), -1)
+						hour: addDays(new Date(aMonday), -1)
 					}
 				])
 			).toBeFalsy()
@@ -193,7 +193,7 @@ describe("max per range Rule", () => {
 				theSrv(
 					{
 						...minReservation,
-						Stunde: getDate(18, aMonday)
+						hour: getDate(18, aMonday)
 					},
 					[]
 				)
@@ -201,10 +201,10 @@ describe("max per range Rule", () => {
 		})
 		it("works if there are reservations before the hour", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: getDate(18, aMonday) }, [
+				theSrv({ ...minReservation, hour: getDate(18, aMonday) }, [
 					{
 						...minReservation,
-						Stunde: getDate(14, aMonday)
+						hour: getDate(14, aMonday)
 					}
 				])
 			).toBeFalsy()
@@ -214,12 +214,12 @@ describe("max per range Rule", () => {
 				typeof theSrv(
 					{
 						...minReservation,
-						Stunde: getDate(18, aMonday)
+						hour: getDate(18, aMonday)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: getDate(17, aMonday)
+							hour: getDate(17, aMonday)
 						}
 					]
 				)
@@ -227,10 +227,10 @@ describe("max per range Rule", () => {
 		})
 		it("works if there are reservations after the hour but outside of daterange", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: getDate(18, aMonday) }, [
+				theSrv({ ...minReservation, hour: getDate(18, aMonday) }, [
 					{
 						...minReservation,
-						Stunde: addDays(getDate(14, aMonday), 1)
+						hour: addDays(getDate(14, aMonday), 1)
 					}
 				])
 			).toBeFalsy()
@@ -240,14 +240,14 @@ describe("max per range Rule", () => {
 				theSrv(
 					{
 						...minReservation,
-						Stunde: addDays(getDate(13, aMonday), 1)
+						hour: addDays(getDate(13, aMonday), 1)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: getDate(17, aMonday)
+							hour: getDate(17, aMonday)
 						},
-						{ ...minReservation, Stunde: getDate(18, aMonday) }
+						{ ...minReservation, hour: getDate(18, aMonday) }
 					]
 				)
 			).toBeFalsy()
@@ -267,12 +267,12 @@ describe("max per range Rule", () => {
 				typeof theSrv(
 					{
 						...minReservation,
-						Stunde: new Date(2019, 9, 16)
+						hour: new Date(2019, 9, 16)
 					},
 					[
 						{
 							...minReservation,
-							Stunde: new Date(2019, 9, 17)
+							hour: new Date(2019, 9, 17)
 						}
 					]
 				)
@@ -280,20 +280,20 @@ describe("max per range Rule", () => {
 		})
 		it("works if there are only reservations before the offset", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(2019, 9, 16) }, [
+				theSrv({ ...minReservation, hour: new Date(2019, 9, 16) }, [
 					{
 						...minReservation,
-						Stunde: new Date(2019, 9, 15)
+						hour: new Date(2019, 9, 15)
 					}
 				])
 			).toBeFalsy()
 		})
 		it("works if there are only reservations after this week", () => {
 			expect(
-				theSrv({ ...minReservation, Stunde: new Date(2019, 9, 16) }, [
+				theSrv({ ...minReservation, hour: new Date(2019, 9, 16) }, [
 					{
 						...minReservation,
-						Stunde: new Date(2019, 9, 21)
+						hour: new Date(2019, 9, 21)
 					}
 				])
 			)
@@ -307,14 +307,14 @@ describe("max per range Rule", () => {
 					typeof theSrv(
 						{
 							...minReservation,
-							Stunde: date,
-							Reserviert_von: "a"
+							hour: date,
+							reservedBy: { id: "a", roleId: "R" }
 						},
 						[
 							{
 								...minReservation,
-								Stunde: date,
-								Spieler1: "a"
+								hour: date,
+								players: [{ id: "a" }]
 							}
 						]
 					)
@@ -325,17 +325,15 @@ describe("max per range Rule", () => {
 					theSrv(
 						{
 							...minReservation,
-							Stunde: date,
-							Reserviert_von: "a",
-							Spieler1: "b1",
-							Spieler2: "b2"
+							hour: date,
+							reservedBy: { id: "a", roleId: "R" },
+							players: [{ id: "b1" }, { id: "b2" }]
 						},
 						[
 							{
 								...minReservation,
-								Stunde: date,
-								Spieler1: "c1",
-								Spieler2: "c2"
+								hour: date,
+								players: [{ id: "c1" }, { id: "c2" }]
 							}
 						]
 					)

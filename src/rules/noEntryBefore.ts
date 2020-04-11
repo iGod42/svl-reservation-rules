@@ -1,6 +1,6 @@
 import { IRule } from "../api"
 
-const MESSAGE = "Eintragen erst nach der angefangenen Stunde möglich"
+const MESSAGE = "Eintragen erst nach der angefangenen hour möglich"
 
 export const noEntryBefore = (dayOffset = 0): IRule => reservation => {
 	const now = new Date()
@@ -17,7 +17,7 @@ export const noEntryBefore = (dayOffset = 0): IRule => reservation => {
 	// apply offset
 	compHour.setDate(compHour.getDate() - dayOffset)
 
-	if (reservation.Stunde < compHour) return MESSAGE
+	if (reservation.hour < compHour) return MESSAGE
 
 	return false
 }
