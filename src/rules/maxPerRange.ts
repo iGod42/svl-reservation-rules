@@ -55,8 +55,7 @@ export const maxPerRange = (
 		? addDays(getBeginningOfWeek(today), 7)
 		: addDays(startDate, options.dayRange as number)
 
-	if (reservation.hour < startDate || reservation.hour >= endDate)
-		return false
+	if (reservation.hour < startDate || reservation.hour >= endDate) return false
 
 	const hour = reservation.hour.getHours()
 	if (hour < options.startAtHour || hour >= options.endAtHour) return false
@@ -71,8 +70,8 @@ export const maxPerRange = (
 		.filter(res => res.hour < endDate)
 		.filter(res => res.hour.getHours() >= options.startAtHour)
 		.filter(res => res.hour.getHours() < options.endAtHour)
-		.filter(res => options.applyToWeekdays.includes(res.hour.getDay()))
-		.length < maximum
+		.filter(res => options.applyToWeekdays.includes(res.hour.getDay())).length <
+		maximum
 		? false
 		: `Maximale reservierungen zwischen ${startDate} und ${endDate} von ${
 				options.startAtHour
