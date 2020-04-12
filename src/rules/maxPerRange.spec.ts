@@ -308,13 +308,13 @@ describe("max per range Rule", () => {
 						{
 							...minReservation,
 							hour: date,
-							reservedBy: { id: "a", roleId: "R" }
+							reservedBy: "a"
 						},
 						[
 							{
 								...minReservation,
 								hour: date,
-								players: [{ id: "a" }]
+								players: ["a"]
 							}
 						]
 					)
@@ -326,14 +326,14 @@ describe("max per range Rule", () => {
 						{
 							...minReservation,
 							hour: date,
-							reservedBy: { id: "a", roleId: "R" },
-							players: [{ id: "b1" }, { id: "b2" }]
+							reservedBy: "a",
+							players: ["b1", "b2"]
 						},
 						[
 							{
 								...minReservation,
 								hour: date,
-								players: [{ id: "c1" }, { id: "c2" }]
+								players: ["c1", "c2"]
 							}
 						]
 					)

@@ -17,7 +17,7 @@ describe("user is in it rule", () => {
 			srv(
 				{
 					...distinctiveOtherReservation,
-					reservedBy: { id: userName, roleId: "R" }
+					reservedBy: userName
 				},
 				undefined,
 				theUser
@@ -29,7 +29,7 @@ describe("user is in it rule", () => {
 			srv(
 				{
 					...distinctiveOtherReservation,
-					players: [{ id: userName }]
+					players: [userName]
 				},
 				undefined,
 				theUser

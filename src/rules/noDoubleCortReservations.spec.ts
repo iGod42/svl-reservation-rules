@@ -10,8 +10,8 @@ describe("no reservations on another court rule", () => {
 	const dummyReservation = {
 		...basicDetails,
 		courtId: 1,
-		reservedBy: { id: "rv", roleId: "R" },
-		players: [{ id: "s1" }, { id: "s2" }]
+		reservedBy: "rv",
+		players: ["s1", "s2"]
 	}
 
 	it("returns falsely if all other people are used", () => {
@@ -20,8 +20,8 @@ describe("no reservations on another court rule", () => {
 				{
 					...basicDetails,
 					courtId: 2,
-					reservedBy: { id: "not_it", roleId: "R" },
-					players: [{ id: "also_not_it" }, { id: "not" }]
+					reservedBy: "not_it",
+					players: ["also_not_it", "not"]
 				}
 			])
 		).toBeFalsy()

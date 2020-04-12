@@ -9,33 +9,27 @@ const basicDetails = {
 
 const dummyReservation = {
 	...basicDetails,
-	reservedBy: {
-		id: "rv",
-		roleId: "R"
-	},
-	players: [
-		{ id: "as1" },
-		{ id: "as2" }
-	]
+	reservedBy: "rv",
+	players: ["as1", "as2"]
 }
 
 describe("getFilterForSameUser", () => {
 	it("returns true if aReservedBy is bReserved by", () => {
 		expect(srv(dummyReservation)({
 			...basicDetails,
-			reservedBy: { ...dummyReservation.reservedBy }
+			reservedBy: dummyReservation.reservedBy
 		})).toBeTruthy()
 	})
 	it("returns true if aReserved is in bPlayers", () => {
 		expect(srv(dummyReservation)({
 			...basicDetails,
-			players: [{ ...dummyReservation.reservedBy }]
+			players: [dummyReservation.reservedBy]
 		})).toBeTruthy()
 	})
 	it("returns true if an aPlayer is in bPlayers", () => {
 		expect(srv(dummyReservation)({
 			...basicDetails,
-			players: [{ ...dummyReservation.players[0] }]
+			players: [dummyReservation.players[0]]
 		})).toBeTruthy()
 	})
 	it("returns false if there is no overlap", () => {
