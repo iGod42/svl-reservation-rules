@@ -13,10 +13,7 @@ export class ReservationRules {
 		this._reservationProvider = reservationProvider
 	}
 
-	canCancel(
-		user: IUser,
-		delReservation: IReservation
-	): Promise<Array<string | false>> {
+	canCancel(user: IUser, delReservation: IReservation): Promise<Array<string>> {
 		const userRole: IRole = roles[user.roleId]
 
 		const rules = userRole?.reservationCancellationRules || [
@@ -24,11 +21,13 @@ export class ReservationRules {
 		]
 
 		return Promise.resolve(
-			rules.map(rule => rule(delReservation, undefined, user)).filter(a => a) // remove null values
+			rules
+				.map(rule => rule(delReservation, undefined, user))
+				.filter(a => a) as string[]
 		)
 	}
 
-	canReserve(user: IUser, reservation: IReservation) {
+	canReserve(user: IUser, reservation: IReservation): Promise<Array<string>> {
 		const userRole = roles[user.roleId]
 		const monday = getBeginningOfWeek(reservation.hour)
 
