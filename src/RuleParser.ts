@@ -8,7 +8,7 @@ export const parseRule = (ruleDefinition: RuleDefinition): RuleEvaluation => {
 		const ruleEvaluation = parser(ruleDefinition)
 		return ruleEvaluation
 	})
-	throw new Error("Invalid Rule Definition")
+	throw new Error("Invalid Rule Definition: " + JSON.stringify(ruleDefinition))
 }
 
 export const parseRules = (
