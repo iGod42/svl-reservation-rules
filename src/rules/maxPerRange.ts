@@ -1,8 +1,8 @@
 import { trimTimeComponent, addDays, getBeginningOfWeek } from "../tools"
 import { getFilterForSameUser } from "./helpers"
 import formatWeekdays from "../tools/formatWeekdays"
-import { MaxPerRangeDefinition } from "../api/MaxPerRangeDefinition"
-import { RuleEvaluation, RuleParser, RuleDefinition } from "../api"
+import { MaxPerRangeDefinition } from "./api/MaxPerRangeDefinition"
+import { RuleEvaluation, RuleParser, RuleDefinition } from "./api"
 
 const maxPerRange = (definition: MaxPerRangeDefinition): RuleEvaluation => ({
 	reservation,

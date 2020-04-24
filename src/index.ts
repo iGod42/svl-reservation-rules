@@ -1,2 +1,1 @@
-export { RuleDefinition } from "./api"
-export { parseRule, parseRules } from "./rules"
+export { RuleDefinition, parseRule, parseRules } from "./rules"

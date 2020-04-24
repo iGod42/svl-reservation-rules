@@ -1,6 +1,6 @@
 import limitToCourts from "./limitToCourts"
 import minReservation from "./MinReservation"
-import { Reservation } from "../api"
+import { Reservation } from "./api"
 
 const getDate = (hour: number, minute = 0) => {
 	const now = new Date()

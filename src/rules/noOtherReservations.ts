@@ -1,4 +1,4 @@
-import { RuleEvaluation, RuleParser, RuleDefinition } from "../api"
+import { RuleEvaluation, RuleParser, RuleDefinition } from "./api"
 
 const MESSAGE = "Die Stunde wurde bereits reserviert!"
 

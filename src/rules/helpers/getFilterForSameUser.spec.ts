@@ -1,4 +1,4 @@
-import { Reservation } from "../../api"
+import { Reservation } from "../api"
 import { getFilterForSameUser as srv } from "./getFilterForSameUser"
 import minReservation from "../MinReservation"
 

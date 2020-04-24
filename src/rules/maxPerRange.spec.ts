@@ -3,8 +3,8 @@ import srv from "./maxPerRange"
 import { addDays } from "../tools"
 
 import minReservation from "./MinReservation"
-import { Reservation } from "../api"
-import { MaxPerRangeDefinition } from "../api/MaxPerRangeDefinition"
+import { Reservation } from "./api"
+import { MaxPerRangeDefinition } from "./api/MaxPerRangeDefinition"
 
 const getDate = (hour: number, now = new Date()) => {
 	return new Date(
