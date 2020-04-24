@@ -8,7 +8,7 @@ const limitHours = ({
 }: LimitHoursDefinition): RuleEvaluation => ({ reservation }) => {
 	const date = reservation.hour
 	if (
-		date.getHours() <= startHour ||
+		date.getHours() < startHour ||
 		date.getHours() > endHour ||
 		date.getMinutes() !== 0 ||
 		date.getSeconds() !== 0 ||
