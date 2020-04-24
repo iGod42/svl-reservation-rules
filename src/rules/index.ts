@@ -4,6 +4,7 @@ import maxPerRange from "./maxPerRange"
 import noDoubleCourtReservations from "./noDoubleCourtReservations"
 import noEntryAfterWeek from "./noEntryAfterWeek"
 import noEntryBefore from "./noEntryBefore"
+import noEntryPastHour from "./noEntryPastHour"
 import { RuleParser } from "api"
 
 export const parsers: { [key: string]: RuleParser } = {
@@ -12,5 +13,6 @@ export const parsers: { [key: string]: RuleParser } = {
 	maxPerRange,
 	noDoubleCourtReservations,
 	noEntryAfterWeek,
-	noEntryBefore
+	noEntryBefore,
+	noEntryPastHour
 }
