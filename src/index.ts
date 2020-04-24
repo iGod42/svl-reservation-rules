@@ -1,7 +1,6 @@
 import { parsers } from "./rules"
 
 import { RuleDefinition, RuleEvaluation, RuleParser } from "./api"
-//export type {}
 
 export const parseRule = (ruleDefinition: RuleDefinition): RuleEvaluation => {
 	Object.keys(parsers).forEach(parserKey => {
