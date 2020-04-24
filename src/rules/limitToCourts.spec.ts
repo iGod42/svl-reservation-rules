@@ -109,16 +109,15 @@ describe("limitToCourts", () => {
 						courtId: 1,
 						hour: exampleTuesday
 					})
-				)
+				).toBeFalsy()
 			})
 			it("rejects reservations on days listed", () => {
-				expect(
-					theSrv({
+				expect(typeof 				theSrv({
 						...minReservation,
 						courtId: 1,
 						hour: exampleMonday
 					})
-				)
+				).toBe("string")
 			})
 		})
 	})

@@ -43,10 +43,10 @@ describe("limitHours", () => {
 			).toBe("string")
 		})
 		it("accepts exactly startHour", () => {
-			expect(srv({ ...minReservation, hour: getDate(startHour) }))
+			expect(srv({ ...minReservation, hour: getDate(startHour) })).toBeFalsy()
 		})
 		it("accepts exactly endHour", () => {
-			expect(srv({ ...minReservation, hour: getDate(endHour) }))
+			expect(srv({ ...minReservation, hour: getDate(endHour) })).toBeFalsy()
 		})
 		it("rejects times before start", () => {
 			expect(
