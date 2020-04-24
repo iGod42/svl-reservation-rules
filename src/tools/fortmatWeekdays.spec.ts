@@ -37,12 +37,10 @@ describe("format Weekdays", () => {
 	})
 	it("returns a separated list of weekdays if all are passed with no text options", () => {
 		const days = [0, 1, 2, 3, 4, 5, 6]
-		console.log(formatWeekdays(days))
 		expect(formatWeekdays(days).split(",")).toHaveLength(days.length)
 	})
 	it("returns a separated list of weekdays if all are passed with text options", () => {
 		const days = [0, 1, 2, 3, 4, 5, 6]
-		console.log(formatWeekdays(days))
 		expect(formatWeekdays(days, options).split(",")).toHaveLength(days.length)
 	})
 })
