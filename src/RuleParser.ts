@@ -1,13 +1,10 @@
 import { parsers } from "./rules"
-
-import { RuleDefinition, RuleEvaluation, RuleParser } from "./api"
+import { RuleDefinition, RuleEvaluation } from "./api"
 
 export const parseRule = (ruleDefinition: RuleDefinition): RuleEvaluation => {
-	Object.keys(parsers).forEach(parserKey => {
-		const parser = parsers[parserKey] as RuleParser
-		const ruleEvaluation = parser(ruleDefinition)
-		return ruleEvaluation
-	})
+	const re = parsers.map(parser => parser(ruleDefinition)).find(re => !!re)
+	if (re) return re
+
 	throw new Error("Invalid Rule Definition: " + JSON.stringify(ruleDefinition))
 }
 

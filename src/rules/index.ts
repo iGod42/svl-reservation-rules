@@ -9,7 +9,7 @@ import noOhterReservations from "./noOtherReservations"
 import userIsInIt from "./userIsInIt"
 import { RuleParser } from "../api"
 
-export const parsers: { [key: string]: RuleParser } = {
+export const parsers: RuleParser[] = [
 	limitHours,
 	limitToCourts,
 	maxPerRange,
@@ -19,4 +19,4 @@ export const parsers: { [key: string]: RuleParser } = {
 	noEntryPastHour,
 	noOhterReservations,
 	userIsInIt
-}
+]
