@@ -1,12 +1,12 @@
-import { IReservation } from "../../api"
+import { Reservation } from "api"
 
-export const getFilterForSameUser = (bRes: IReservation) => (
-	aRes: IReservation
+export const getFilterForSameUser = (bRes: Reservation) => (
+	aRes: Reservation
 ): boolean =>
-	aRes.reservedBy === bRes.reservedBy ||
+	aRes.reservedBy.id === bRes.reservedBy.id ||
 	!!aRes.players.find(
 		aPlayer =>
-			aPlayer === bRes.reservedBy ||
-			!!bRes.players.find(bPlayer => aPlayer === bPlayer)
+			aPlayer.id === bRes.reservedBy.id ||
+			!!bRes.players.find(bPlayer => aPlayer.id === bPlayer.id)
 	) ||
-	!!bRes.players.find(bPlayer => bPlayer === aRes.reservedBy)
+	!!bRes.players.find(bPlayer => bPlayer.id === aRes.reservedBy.id)

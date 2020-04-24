@@ -1,3 +1,4 @@
+import { Reservation } from "api"
 import { getFilterForSameUser as srv } from "./getFilterForSameUser"
 import minReservation from "../MinReservation"
 
@@ -6,11 +7,10 @@ const basicDetails = {
 	courtId: 1,
 	hour: new Date(2019, 10, 10)
 }
-
-const dummyReservation = {
+const dummyReservation: Reservation = {
 	...basicDetails,
-	reservedBy: "rv",
-	players: ["as1", "as2"]
+	reservedBy: { id: "rv" },
+	players: [{ id: "as1" }, { id: "as2" }]
 }
 
 describe("getFilterForSameUser", () => {

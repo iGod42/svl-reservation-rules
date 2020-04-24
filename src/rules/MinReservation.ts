@@ -1,9 +1,11 @@
-import { IReservation } from "../api"
+import { Reservation } from "api"
 
-const minReservation: IReservation = {
+const minReservation: Reservation = {
 	hour: new Date(2019, 10, 10),
-	reservedBy: "bla",
-	players: ["S1", "S2"],
+	reservedBy: {
+		id: "S1"
+	},
+	players: [{ id: "S1" }, { id: "S2" }],
 	courtId: 1
 }
 
