@@ -1,5 +1,5 @@
 import { getFilterForSameUser } from "./helpers"
-import { RuleEvaluation, RuleParser, RuleDefinition } from "api"
+import { RuleEvaluation, RuleParser, RuleDefinition } from "../api"
 
 const MESSAGE =
 	"Du hast bereits zur selben Stunde auf einem anderen Platz eingetragen"

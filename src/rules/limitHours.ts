@@ -1,6 +1,6 @@
-import { LimitHoursDefinition } from "api/LimitHoursDefinition"
-import { RuleEvaluation, RuleParser } from "api/Rule"
-import { RuleDefinition } from "api"
+import { LimitHoursDefinition } from "../api/LimitHoursDefinition"
+import { RuleEvaluation, RuleParser } from "../api/Rule"
+import { RuleDefinition } from "../api"
 
 const limitHours = ({
 	startHour,

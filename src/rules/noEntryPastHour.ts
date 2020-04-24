@@ -1,5 +1,5 @@
-import { RuleParser, RuleDefinition, RuleEvaluation } from "api"
-import { NoEntryPastHourDefinition } from "api/NoEntryPastHourDefinition"
+import { RuleParser, RuleDefinition, RuleEvaluation } from "../api"
+import { NoEntryPastHourDefinition } from "../api/NoEntryPastHourDefinition"
 
 const noEntryPastHour = (
 	definition: NoEntryPastHourDefinition

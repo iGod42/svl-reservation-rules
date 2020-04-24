@@ -1,7 +1,7 @@
 import { addDays } from "../tools"
 import noEntryPastHour from "./noEntryPastHour"
 import minReservation from "./MinReservation"
-import { Reservation } from "api"
+import { Reservation } from "../api"
 
 describe("no entry past hour", () => {
 	const getReservation = (

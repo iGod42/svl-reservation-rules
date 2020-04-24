@@ -1,4 +1,4 @@
-import { Reservation } from "api"
+import { Reservation } from "../api"
 
 const minReservation: Reservation = {
 	hour: new Date(2019, 10, 10),

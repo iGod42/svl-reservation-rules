@@ -1,5 +1,5 @@
-import { NoEntryBeforeDefinition } from "api/NoEntryBeforeDefinition"
-import { RuleEvaluation, RuleParser, RuleDefinition } from "api"
+import { NoEntryBeforeDefinition } from "../api/NoEntryBeforeDefinition"
+import { RuleEvaluation, RuleParser, RuleDefinition } from "../api"
 
 const MESSAGE = "Eintragen erst nach der angefangenen Stunde möglich"
 

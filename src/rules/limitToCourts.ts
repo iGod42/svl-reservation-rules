@@ -1,4 +1,4 @@
-import { RuleEvaluation, RuleParser } from "api"
+import { RuleEvaluation, RuleParser } from "../api"
 
 const limitToCourts = (
 	courtIds: number[],

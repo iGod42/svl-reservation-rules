@@ -1,6 +1,6 @@
 import limitHours from "./limitHours"
 import minReservation from "./MinReservation"
-import { Reservation } from "api"
+import { Reservation } from "../api"
 
 describe("limitHours", () => {
 	describe("rule", () => {

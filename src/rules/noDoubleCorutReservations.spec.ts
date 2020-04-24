@@ -1,6 +1,6 @@
 import noDoubleCourtReservations from "./noDoubleCourtReservations"
 import minReservation from "./MinReservation"
-import { Reservation } from "api"
+import { Reservation } from "../api"
 
 describe("no reservations on another court rule", () => {
 	const basicDetails = {

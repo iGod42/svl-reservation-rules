@@ -1,6 +1,6 @@
 import noOtherReservations from "./noOtherReservations"
 import minReservation from "./MinReservation"
-import { Reservation } from "api"
+import { Reservation } from "../api"
 
 describe("opening hours rule", () => {
 	const reservation: Reservation = {

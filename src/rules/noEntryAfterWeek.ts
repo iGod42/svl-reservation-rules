@@ -1,6 +1,6 @@
 import { addDays, getBeginningOfWeek, trimTimeComponent } from "../tools"
-import { RuleEvaluation, RuleDefinition, RuleParser } from "api"
-import { NoEntryAfterweekDefinition } from "api/NoEntryAfterweekDefinition"
+import { RuleEvaluation, RuleDefinition, RuleParser } from "../api"
+import { NoEntryAfterweekDefinition } from "../api/NoEntryAfterweekDefinition"
 
 const noEntryAfterWeek = (
 	definition: NoEntryAfterweekDefinition

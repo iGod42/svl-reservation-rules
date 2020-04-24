@@ -1,4 +1,4 @@
-import { Reservation, RuleDefinition } from "api"
+import { Reservation, RuleDefinition } from "../api"
 
 export interface RuleEvaluationOptions {
 	reservation: Reservation

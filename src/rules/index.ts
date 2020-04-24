@@ -7,7 +7,7 @@ import noEntryBefore from "./noEntryBefore"
 import noEntryPastHour from "./noEntryPastHour"
 import noOhterReservations from "./noOtherReservations"
 import userIsInIt from "./userIsInIt"
-import { RuleParser } from "api"
+import { RuleParser } from "../api"
 
 export const parsers: { [key: string]: RuleParser } = {
 	limitHours,

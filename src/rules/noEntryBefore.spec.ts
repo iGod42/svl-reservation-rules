@@ -1,6 +1,6 @@
 import noEntryBefore from "./noEntryBefore"
 import minReservation from "./MinReservation"
-import { Reservation } from "api"
+import { Reservation } from "../api"
 
 describe("opening hours rule", () => {
 	describe("for current hour (without param)", () => {

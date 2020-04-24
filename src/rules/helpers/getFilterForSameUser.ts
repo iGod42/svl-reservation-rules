@@ -1,4 +1,4 @@
-import { Reservation } from "api"
+import { Reservation } from "../../api"
 
 export const getFilterForSameUser = (bRes: Reservation) => (
 	aRes: Reservation
