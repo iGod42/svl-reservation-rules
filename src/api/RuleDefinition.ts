@@ -6,6 +6,7 @@ import { NoEntryAfterweekDefinition } from "./NoEntryAfterweekDefinition"
 import { NoEntryBeforeDefinition } from "./NoEntryBeforeDefinition"
 import { NoEntryPastHourDefinition } from "./NoEntryPastHourDefinition"
 import { NoOtherReservationsDefinition } from "./NoOtherReservationsDefinition"
+import { UserIsInIt } from "./UserIsInIt"
 
 export type RuleDefinition =
 	| LimitToCourtsDefinition
@@ -16,3 +17,4 @@ export type RuleDefinition =
 	| NoEntryBeforeDefinition
 	| NoEntryPastHourDefinition
 	| NoOtherReservationsDefinition
+	| UserIsInIt

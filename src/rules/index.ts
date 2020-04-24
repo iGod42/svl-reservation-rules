@@ -6,6 +6,7 @@ import noEntryAfterWeek from "./noEntryAfterWeek"
 import noEntryBefore from "./noEntryBefore"
 import noEntryPastHour from "./noEntryPastHour"
 import noOhterReservations from "./noOtherReservations"
+import userIsInIt from "./userIsInIt"
 import { RuleParser } from "api"
 
 export const parsers: { [key: string]: RuleParser } = {
@@ -16,5 +17,6 @@ export const parsers: { [key: string]: RuleParser } = {
 	noEntryAfterWeek,
 	noEntryBefore,
 	noEntryPastHour,
-	noOhterReservations
+	noOhterReservations,
+	userIsInIt
 }
