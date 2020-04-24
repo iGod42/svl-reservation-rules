@@ -5,6 +5,7 @@ import { NoDoubleCourtReservationDefinition } from "./NoDoubleCourtReservationDe
 import { NoEntryAfterweekDefinition } from "./NoEntryAfterweekDefinition"
 import { NoEntryBeforeDefinition } from "./NoEntryBeforeDefinition"
 import { NoEntryPastHourDefinition } from "./NoEntryPastHourDefinition"
+import { NoOtherReservationsDefinition } from "./NoOtherReservationsDefinition"
 
 export type RuleDefinition =
 	| LimitToCourtsDefinition
@@ -14,3 +15,4 @@ export type RuleDefinition =
 	| NoEntryAfterweekDefinition
 	| NoEntryBeforeDefinition
 	| NoEntryPastHourDefinition
+	| NoOtherReservationsDefinition
