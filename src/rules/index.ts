@@ -20,3 +20,5 @@ export const parsers: RuleParser[] = [
 	noOhterReservations,
 	userIsInIt
 ]
+
+export { parseRule, parseRules } from "./RuleParser"

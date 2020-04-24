@@ -1,5 +1,5 @@
-import { parsers } from "./rules"
-import { RuleDefinition, RuleEvaluation } from "./api"
+import { parsers } from "."
+import { RuleDefinition, RuleEvaluation } from "../api"
 
 export const parseRule = (ruleDefinition: RuleDefinition): RuleEvaluation => {
 	const re = parsers.map(parser => parser(ruleDefinition)).find(re => !!re)
