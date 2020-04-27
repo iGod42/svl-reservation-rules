@@ -6,17 +6,21 @@ import {
 	BulkRuleEvaluationOptions
 } from "./api"
 import { NoEntryPastHourDefinition } from "./api/NoEntryPastHourDefinition"
+import formatWeekdays from '../tools/formatWeekdays'
 
+const allWeekDays = [0, 1, 2, 3, 4, 5, 6]
 class NoEntryPastHour implements Rule {
 	readonly performanceImpact: number = 2
 	private readonly definition
 
 	constructor(definition: NoEntryPastHourDefinition) {
-		this.definition = { weekDays: [0, 1, 2, 3, 4, 5, 6], ...definition }
+		this.definition = { weekDays: allWeekDays, ...definition }
 	}
 
-	private message = () =>
-		`Keine Reservierungen ab ${this.definition.hour} Uhr erlaubt`
+	private message = () => (this.definition.weekDays !== allWeekDays ? formatWeekdays(this.definition.weekDays, {
+		weekdayText: "Wochentags",
+		weekendText: "Wochenends"
+	}) + " k" : "K") + `eine Reservierungen ab ${this.definition.hour} Uhr erlaubt`
 
 	private filter = (compDate: Date) =>
 		compDate.getHours() >= this.definition.hour &&
