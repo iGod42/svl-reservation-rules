@@ -23,32 +23,32 @@ describe("limitToCourts", () => {
 
 			const theSrv = (reservation: Reservation) => rule({ reservation })
 
-			it("doesn't allow reservations for the first court in the list", () => {
+			it("allows reservations for the first court in the list", () => {
 				expect(
-					typeof theSrv({
+					theSrv({
 						...minReservation,
 						courtId: 1,
 						hour: new Date()
 					})
-				).toBe("string")
+				).toBeUndefined()
 			})
-			it("doesn't allow reservations for the second court in the list", () => {
+			it("allows reservations for the second court in the list", () => {
 				expect(
-					typeof theSrv({
+					theSrv({
 						...minReservation,
 						courtId: 2,
 						hour: new Date()
 					})
-				).toBe("string")
+				).toBeUndefined()
 			})
-			it("allows all courts that are not listed", () => {
+			it("doesn't allow all courts that are not listed", () => {
 				expect(
-					theSrv({
+					typeof theSrv({
 						...minReservation,
 						courtId: 3333,
 						hour: new Date()
 					})
-				).toBeFalsy()
+				).toBe("string")
 			})
 		})
 
@@ -56,7 +56,7 @@ describe("limitToCourts", () => {
 			const cutoffTime = 17
 			const rule = limitToCourts({
 				type: "limitToCourts",
-				courtIds: [1],
+				courtIds: [2],
 				afterHour: cutoffTime
 			})
 			if (!rule) throw new Error("parsing failed")
@@ -94,7 +94,7 @@ describe("limitToCourts", () => {
 		describe("when weekday is given", () => {
 			const rule = limitToCourts({
 				type: "limitToCourts",
-				courtIds: [1],
+				courtIds: [2],
 				weekDays: [1]
 			})
 			if (!rule) throw new Error("parsing failed")
@@ -102,16 +102,16 @@ describe("limitToCourts", () => {
 
 			const exampleMonday = new Date(2020, 0, 13) // day 1
 			const exampleTuesday = new Date(2020, 0, 14) // day 2
-			it("accepts reservations on days not listed", () => {
+			it("accepts reservations on days listed", () => {
 				expect(
 					theSrv({
 						...minReservation,
-						courtId: 1,
+						courtId: 2,
 						hour: exampleTuesday
 					})
 				).toBeFalsy()
 			})
-			it("rejects reservations on days listed", () => {
+			it("rejects reservations on days not listed", () => {
 				expect(
 					typeof theSrv({
 						...minReservation,

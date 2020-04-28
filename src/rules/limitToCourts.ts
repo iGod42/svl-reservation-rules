@@ -10,7 +10,7 @@ const limitToCourts = (
 
 	if (
 		weekDays.includes(std.getDay()) &&
-		courtIds.includes(court) &&
+		!courtIds.includes(court) &&
 		std.getHours() >= afterHour
 	)
 		return `Keine Reservierung von Platz ${court}${
