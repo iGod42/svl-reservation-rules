@@ -5,7 +5,7 @@ describe("user is in it rule", () => {
 	const userId = "dummyXYZ"
 	const distinctiveOtherReservation = minReservation
 
-	const srv = userIsInIt({ type: "userIsInIt" })
+	const srv = userIsInIt({ type: "userIsInIt" })?.evaluate
 	if (!srv) throw new Error("invalid definition")
 
 	it("fails if user is not in the reservation", () => {

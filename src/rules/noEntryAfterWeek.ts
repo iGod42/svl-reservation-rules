@@ -1,25 +1,36 @@
 import { addDays, getBeginningOfWeek, trimTimeComponent } from "../tools"
-import { RuleEvaluation, RuleDefinition, RuleParser } from "./api"
+import { RuleDefinition, RuleParser, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./api"
 import { NoEntryAfterweekDefinition } from "./api/NoEntryAfterweekDefinition"
 
-const noEntryAfterWeek = (
-	definition: NoEntryAfterweekDefinition
-): RuleEvaluation => ({ reservation }) => {
-	const { offsetWeeks = 0 } = definition
-	const targetDate = reservation.hour
-	const cutoffDate = trimTimeComponent(
-		addDays(getBeginningOfWeek(new Date()), 7 * (offsetWeeks + 1))
-	)
+class NoEntryAfterweek implements Rule {
+	private readonly definition
+	readonly performanceImpact: number = 2
 
-	if (cutoffDate < targetDate)
-		return `Du darfst max ${offsetWeeks} Woche${
-			offsetWeeks > 1 ? "n" : ""
+	constructor(definition: NoEntryAfterweekDefinition) {
+		this.definition = definition
+	}
+
+	private getCutoffDate = (now = new Date()) =>
+		trimTimeComponent(addDays(getBeginningOfWeek(now), 7 * ((this.definition.offsetWeeks || 0) + 1)))
+
+	private message = () => `Du darfst max ${this.definition.offsetWeeks} Woche${
+		this.definition.offsetWeeks > 1 ? "n" : ""
 		} in die Zukunft eintragen`
+
+	evaluate = ({ reservation, now }: RuleEvaluationOptions) => {
+		return this.getCutoffDate(now) < reservation.hour ? this.message() : undefined
+	}
+
+	evaluateBulk = ({ reservationsInfo, now }: BulkRuleEvaluationOptions) => {
+		reservationsInfo
+			.filter(ri => !ri.violation && this.getCutoffDate(now) < ri.hour)
+			.forEach(ri => ri.violation = this.message())
+	}
 }
 
 const parse: RuleParser = (definition: RuleDefinition) => {
 	if (definition.type === "noEntryAfterWeek") {
-		return noEntryAfterWeek(definition as NoEntryAfterweekDefinition)
+		return new NoEntryAfterweek(definition as NoEntryAfterweekDefinition)
 	}
 }
 

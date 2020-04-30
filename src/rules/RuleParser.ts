@@ -7,8 +7,8 @@ import noEntryBefore from "./noEntryBefore"
 import noEntryPastHour from "./noEntryPastHour"
 import noOhterReservations from "./noOtherReservations"
 import userIsInIt from "./userIsInIt"
-import { RuleParser } from "./api"
-import { RuleDefinition, RuleEvaluation } from "./api"
+import { RuleParser, Rule } from "./api"
+import { RuleDefinition } from "./api"
 
 export const parsers: RuleParser[] = [
 	limitHours,
@@ -22,7 +22,7 @@ export const parsers: RuleParser[] = [
 	userIsInIt
 ]
 
-export const parseRule = (ruleDefinition: RuleDefinition): RuleEvaluation => {
+export const parseRule = (ruleDefinition: RuleDefinition): Rule => {
 	const re = parsers.map(parser => parser(ruleDefinition)).find(re => !!re)
 	if (re) return re
 
@@ -31,6 +31,6 @@ export const parseRule = (ruleDefinition: RuleDefinition): RuleEvaluation => {
 
 export const parseRules = (
 	ruleDefinitions: RuleDefinition[]
-): RuleEvaluation[] => {
+): Rule[] => {
 	return ruleDefinitions.map(parseRule)
 }

@@ -1,92 +1,140 @@
 import { trimTimeComponent, addDays, getBeginningOfWeek } from "../tools"
-import { getFilterForSameUser } from "./helpers"
+import { findFirstMatchingUser } from "./helpers"
 import formatWeekdays from "../tools/formatWeekdays"
 import { MaxPerRangeDefinition } from "./api/MaxPerRangeDefinition"
-import { RuleEvaluation, RuleParser, RuleDefinition } from "./api"
+import { RuleParser, RuleDefinition, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions, Reservation } from "./api"
+import { ReservationInfo } from '../evaluation/ReservationInfo'
 
-const maxPerRange = (definition: MaxPerRangeDefinition): RuleEvaluation => ({
-	reservation,
-	allReservations
-}) => {
-	const {
-		maximum,
-		dayOffset = 0,
-		dayRange = 1,
-		startAtHour = 0,
-		endAtHour = 24,
-		applyToWeekdays = [0, 1, 2, 3, 4, 5, 6],
-		startAtReservationDay,
-		limitForUser = true,
-		today: todayOption = new Date()
-	} = definition
+class MaxPerRange implements Rule {
+	private readonly definition
+	readonly performanceImpact: number
+	private readonly dtf
 
-	const today = trimTimeComponent(
-		startAtReservationDay ? reservation.hour : todayOption
-	)
+	constructor(definition: MaxPerRangeDefinition) {
+		this.definition = {
+			dayOffset: 0,
+			dayRange: 1,
+			startAtHour: 0,
+			endAtHour: 24,
+			applyToWeekdays: [0, 1, 2, 3, 4, 5, 6],
+			limitForUser: true,
+			...definition
+		}
 
-	const eow = dayRange === "EOW"
-	const startDate = addDays(today, dayOffset)
+		this.dtf = new Intl.DateTimeFormat("de-AT")
+		this.performanceImpact = (definition.startAtReservationDay ? 100 : 30) - (definition.limitForUser ? 1 : 0)
+	}
 
-	// this could be to startDate > endDate in which case nothing is considered which is correct
-	const endDate = eow
-		? addDays(getBeginningOfWeek(today), 7)
-		: addDays(startDate, dayRange as number)
+	private formatDate = (date: Date): string => this.dtf.format(date)
 
-	if (reservation.hour < startDate || reservation.hour >= endDate) return
+	private message = (startDate: Date, endDate: Date) => {
+		let theMessage = `Maximale Reservierungen (${this.definition.maximum})`
 
-	const hour = reservation.hour.getHours()
-	if (hour < startAtHour || hour >= endAtHour) return
+		const endDateDisplay = new Date(endDate)
+		endDateDisplay.setMilliseconds(endDateDisplay.getMilliseconds() - 1)
 
-	const sameUserFilter = !limitForUser
-		? () => true
-		: getFilterForSameUser(reservation)
+		theMessage +=
+			(endDateDisplay.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24) > 1
+				? ` von ${this.formatDate(startDate)} bis ${this.formatDate(endDateDisplay)}`
+				: ` am ${this.formatDate(startDate)}`
 
-	const dtf = new Intl.DateTimeFormat("de-AT")
-	const formatDate = (date: Date): string => dtf.format(date)
+		if (this.definition.startAtHour !== 0 && this.definition.endAtHour !== 24)
+			theMessage += ` zwischen ${this.definition.startAtHour} und ${this.definition.endAtHour} Uhr`
+		else if (this.definition.startAtHour !== 0) theMessage += ` nach ${this.definition.startAtHour} Uhr`
+		else if (this.definition.endAtHour !== 24) theMessage += ` vor ${this.definition.endAtHour} Uhr`
 
-	if (
-		(allReservations || [])
-			.filter(sameUserFilter)
-			.filter(res => res.hour >= startDate)
-			.filter(res => res.hour < endDate)
-			.filter(res => res.hour.getHours() >= startAtHour)
-			.filter(res => res.hour.getHours() < endAtHour)
-			.filter(res => applyToWeekdays.includes(res.hour.getDay())).length <
-		maximum
-	)
-		return
+		if (this.definition.applyToWeekdays.length !== 7)
+			theMessage +=
+				" " +
+				formatWeekdays(this.definition.applyToWeekdays, {
+					weekdayText: "Wochentags",
+					weekendText: "Wochenends"
+				})
 
-	let message = `Maximale Reservierungen (${maximum})`
+		theMessage += " überschritten"
 
-	const endDateDisplay = new Date(endDate)
-	endDateDisplay.setMilliseconds(endDateDisplay.getMilliseconds() - 1)
+		return theMessage
+	}
 
-	message +=
-		(endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24) > 1
-			? ` von ${formatDate(startDate)} bis ${formatDate(endDateDisplay)}`
-			: ` am ${formatDate(startDate)}`
+	private getToday = (hour: Date, now: Date) => trimTimeComponent(this.definition.startAtReservationDay ? hour : now)
 
-	if (startAtHour !== 0 && endAtHour !== 24)
-		message += ` zwischen ${startAtHour} und ${endAtHour} Uhr`
-	else if (startAtHour !== 0) message += ` nach ${startAtHour} Uhr`
-	else if (endAtHour !== 24) message += ` vor ${endAtHour} Uhr`
+	private getStartDate = (hour: Date, now: Date) => addDays(this.getToday(hour, now), this.definition.dayOffset)
+	private getEndDate = (hour: Date, now: Date) => this.definition.dayRange === "EOW"
+		? addDays(getBeginningOfWeek(this.getToday(hour, now)), 7)
+		: addDays(this.getStartDate(hour, now), this.definition.dayRange)
 
-	if (applyToWeekdays.length !== 7)
-		message +=
-			" " +
-			formatWeekdays(applyToWeekdays, {
-				weekdayText: "Wochentags",
-				weekendText: "Wochenends"
-			})
+	private isHourInRange = (hour: Date, startDate: Date, endDate: Date) =>
+		hour >= startDate
+		&& hour < endDate
+		&& hour.getHours() >= this.definition.startAtHour
+		&& hour.getHours() < this.definition.endAtHour
+		&& this.definition.applyToWeekdays.includes(hour.getDay())
 
-	message += " überschritten"
+	private filter = (allReservations: Reservation[] = [], userIds: string[], startDate: Date, endDate: Date) => {
+		return allReservations
+			.filter(res => !this.definition.limitForUser || findFirstMatchingUser(res, userIds))
+			.filter(res => this.isHourInRange(res.hour, startDate, endDate)).length >=
+			this.definition.maximum
+	}
 
-	return message
+	evaluate = ({ reservation, allReservations, now = new Date() }: RuleEvaluationOptions) => {
+		const startDate = this.getStartDate(reservation.hour, now)
+		const endDate = this.getEndDate(reservation.hour, now)
+
+		if (reservation.hour < startDate || reservation.hour >= endDate) return
+
+		if (reservation.hour.getHours() < this.definition.startAtHour
+			|| reservation.hour.getHours() >= this.definition.endAtHour) return
+
+		return this.filter(allReservations, reservation.players.concat(reservation.reservedBy).map(u => u.id), startDate, endDate) ?
+			this.message(this.getStartDate(reservation.hour, now), this.getEndDate(reservation.hour, now))
+			: undefined
+	}
+
+	evaluateBulk = ({ reservationsInfo, allReservations, now = new Date(), userId }: BulkRuleEvaluationOptions) => {
+		const userIds = userId ? [userId] : []
+
+		const relevantInfo = reservationsInfo
+			.filter(ri => ri.hour.getHours() >= this.definition.startAtHour && ri.hour.getHours() < this.definition.endAtHour)
+
+		const applyRange = (startDate: Date, endDate: Date) => {
+			if (this.filter(allReservations, userIds, startDate, endDate))
+				// we fail all the infos in that range
+				relevantInfo
+					.filter(ri => !ri.violation && this.isHourInRange(ri.hour, startDate, endDate))
+					.forEach(fi => fi.violation = this.message(startDate, endDate))
+		}
+
+		// if we're dealing with a static range
+		if (!this.definition.startAtReservationDay) {
+			const startDate = this.getStartDate(now, now)
+			const endDate = this.getEndDate(now, now)
+
+			applyRange(startDate, endDate)
+		} else {
+			// rule evaluation can only happen day based, so we group for days
+			const dayGroups = relevantInfo.reduce<{ [key: number]: ReservationInfo[] }>((grouped, current) => {
+				const dayMs = trimTimeComponent(current.hour).getTime()
+				if (!grouped[dayMs])
+					grouped[dayMs] = []
+				grouped[dayMs].push(current)
+				return grouped
+			}, {})
+
+			Object.keys(dayGroups).map(a => parseInt(a))
+				.forEach(dayMs => {
+					const date = new Date(dayMs)
+					const startDate = this.getStartDate(date, now)
+					const endDate = this.getEndDate(date, now)
+					applyRange(startDate, endDate)
+				})
+		}
+	}
 }
 
 const parse: RuleParser = (definition: RuleDefinition) => {
 	if (definition.type === "maxPerRange") {
-		return maxPerRange(definition as MaxPerRangeDefinition)
+		return new MaxPerRange(definition as MaxPerRangeDefinition)
 	}
 }
 

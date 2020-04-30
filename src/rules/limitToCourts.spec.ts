@@ -1,6 +1,7 @@
 import limitToCourts from "./limitToCourts"
 import minReservation from "./MinReservation"
 import { Reservation } from "./api"
+import { ReservationInfo } from 'evaluation/ReservationInfo'
 
 const getDate = (hour: number, minute = 0) => {
 	const now = new Date()
@@ -16,12 +17,12 @@ const getDate = (hour: number, minute = 0) => {
 }
 
 describe("limitToCourts", () => {
-	describe("rule", () => {
+	describe("eval", () => {
 		describe("with only court constraint", () => {
 			const rule = limitToCourts({ type: "limitToCourts", courtIds: [1, 2] })
 			if (!rule) throw new Error("parsing failed")
 
-			const theSrv = (reservation: Reservation) => rule({ reservation })
+			const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
 
 			it("allows reservations for the first court in the list", () => {
 				expect(
@@ -60,7 +61,7 @@ describe("limitToCourts", () => {
 				afterHour: cutoffTime
 			})
 			if (!rule) throw new Error("parsing failed")
-			const theSrv = (reservation: Reservation) => rule({ reservation })
+			const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
 
 			it("rejects at exactly cutoff time ", () => {
 				expect(
@@ -98,7 +99,7 @@ describe("limitToCourts", () => {
 				weekDays: [1]
 			})
 			if (!rule) throw new Error("parsing failed")
-			const theSrv = (reservation: Reservation) => rule({ reservation })
+			const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
 
 			const exampleMonday = new Date(2020, 0, 13) // day 1
 			const exampleTuesday = new Date(2020, 0, 14) // day 2
@@ -120,6 +121,25 @@ describe("limitToCourts", () => {
 					})
 				).toBe("string")
 			})
+		})
+	})
+	describe("bulk", () => {
+		const rule = limitToCourts({ type: "limitToCourts", courtIds: [1, 2] })
+		it("set's violation for violated", () => {
+			const okRi: ReservationInfo = {
+				courtId: 1,
+				hour: new Date()
+			}
+			const errorRi: ReservationInfo = {
+				courtId: 3,
+				hour: new Date()
+			}
+			rule?.evaluateBulk({
+				reservationsInfo: [okRi, errorRi]
+			})
+
+			expect(okRi.violation).toBeUndefined()
+			expect(typeof errorRi.violation).toBe("string")
 		})
 	})
 })

@@ -6,7 +6,7 @@ describe("opening hours rule", () => {
 	describe("for current hour (without param)", () => {
 		const rule = noEntryBefore({ type: "noEntryBefore" })
 		if (!rule) throw new Error("invalid definition")
-		const theSrv = (reservation: Reservation) => rule({ reservation })
+		const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
 
 		it("returns a message if the reservation is within the current hour ", () => {
 			expect(
@@ -46,7 +46,7 @@ describe("opening hours rule", () => {
 		const testOffset = 52 * 7
 		const rule = noEntryBefore({ type: "noEntryBefore", dayOffset: testOffset })
 		if (!rule) throw new Error("invalid definition")
-		const theSrv = (reservation: Reservation) => rule({ reservation })
+		const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
 
 		it("returns falsely if res is past the current hour", () => {
 			const now = new Date()

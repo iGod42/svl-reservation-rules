@@ -1,5 +1,5 @@
 import { Reservation } from "../api"
-import { getFilterForSameUser as srv } from "./getFilterForSameUser"
+import { getFilterForSameUser as srv } from "./UserFilters"
 import minReservation from "../MinReservation"
 
 const basicDetails = {

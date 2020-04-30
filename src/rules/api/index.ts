@@ -1,3 +1,3 @@
 export { RuleDefinition } from "./RuleDefinition"
 export { Reservation } from "./Reservation"
-export { RuleEvaluation, RuleParser, RuleEvaluationOptions } from "./Rule"
+export { Rule, RuleParser, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./Rule"

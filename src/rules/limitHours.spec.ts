@@ -12,7 +12,7 @@ describe("limitHours", () => {
 			endHour
 		})
 		if (!rule) return
-		const srv = (reservation: Reservation) => rule({ reservation })
+		const srv = (reservation: Reservation) => rule.evaluate({ reservation })
 
 		const getDate = (hour: number, minute = 0): Date => {
 			const now = new Date()

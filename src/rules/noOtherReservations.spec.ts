@@ -9,7 +9,7 @@ describe("opening hours rule", () => {
 		courtId: 1
 	}
 
-	const srv = noOtherReservations({ type: "noOtherReservations" })
+	const srv = noOtherReservations({ type: "noOtherReservations" })?.evaluate
 	if (!srv) throw new Error("Invalid definition")
 
 	it("returns a message if there's a reservation at the same time and court", () => {
@@ -45,8 +45,5 @@ describe("opening hours rule", () => {
 	})
 	it("returns falsely if no other reservation is defined", () => {
 		expect(srv({ reservation, allReservations: [] })).toBeFalsy()
-	})
-	it("throws if no param for existing reservations is passed", () => {
-		expect(() => srv({ reservation })).toThrow()
 	})
 })

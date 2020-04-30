@@ -25,12 +25,12 @@ describe("no entry past hour", () => {
 		it("returns a message if the reservation is past or equal to the given hour", () => {
 			const rule = noEntryPastHour({ type: "noEntryPastHour", hour: 17 })
 			if (!rule) throw new Error("invalid definition")
-			expect(typeof rule(getReservation(18))).toBe("string")
+			expect(typeof rule.evaluate(getReservation(18))).toBe("string")
 		})
 		it("returns falsely if the reservation is before the given hour", () => {
 			const rule = noEntryPastHour({ type: "noEntryPastHour", hour: 16 })
 			if (!rule) throw new Error("invalid definition")
-			expect(rule(getReservation(10))).toBeFalsy()
+			expect(rule.evaluate(getReservation(10))).toBeFalsy()
 		})
 	})
 
@@ -46,10 +46,10 @@ describe("no entry past hour", () => {
 		if (!rule) throw new Error("invalid definition")
 
 		it("applies cutoff for weekdays given", () => {
-			expect(typeof rule(getReservation(18, exampleMonday))).toBe("string")
+			expect(typeof rule.evaluate(getReservation(18, exampleMonday))).toBe("string")
 		})
 		it("doesn't apply cutoff on weekdays not given", () => {
-			expect(rule(getReservation(18, addDays(exampleMonday, 1)))).toBeFalsy()
+			expect(rule.evaluate(getReservation(18, addDays(exampleMonday, 1)))).toBeFalsy()
 		})
 	})
 })

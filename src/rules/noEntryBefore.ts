@@ -1,33 +1,35 @@
 import { NoEntryBeforeDefinition } from "./api/NoEntryBeforeDefinition"
-import { RuleEvaluation, RuleParser, RuleDefinition } from "./api"
+import { RuleParser, RuleDefinition, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./api"
+import { addDays } from '../tools'
 
-const MESSAGE = "Eintragen erst nach der angefangenen Stunde möglich"
+class NoEntryBefore implements Rule {
+	readonly performanceImpact: number = 1
+	private readonly definition
 
-const noEntryBefore = (options: NoEntryBeforeDefinition): RuleEvaluation => ({
-	reservation
-}) => {
-	const { dayOffset = 0, messageOverride } = options
+	constructor(definition: NoEntryBeforeDefinition) {
+		this.definition = definition
+	}
 
-	const now = new Date()
-	// get start of current hour
-	const compHour = new Date(
-		now.getFullYear(),
-		now.getMonth(),
-		now.getDate(),
-		now.getHours() + 1,
-		0,
-		0,
-		0
-	)
-	// apply offset
-	compHour.setDate(compHour.getDate() - dayOffset)
+	private message = () => this.definition.messageOverride || "Eintragen erst nach der angefangenen Stunde möglich"
 
-	if (reservation.hour < compHour) return messageOverride || MESSAGE
+	private filter = (now = new Date()) =>
+		(compDate: Date) => compDate < addDays(
+			new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1),
+			-this.definition.dayOffset || 0)
+
+	evaluate = ({ reservation, now }: RuleEvaluationOptions) =>
+		this.filter(now)(reservation.hour) ? this.message() : undefined
+
+	evaluateBulk = ({ reservationsInfo, now }: BulkRuleEvaluationOptions) => {
+		reservationsInfo
+			.filter(ri => !ri.violation && this.filter(now)(ri.hour))
+			.forEach(ri => ri.violation = this.message())
+	}
 }
 
 const parse: RuleParser = (definition: RuleDefinition) => {
 	if (definition.type === "noEntryBefore") {
-		return noEntryBefore(definition as NoEntryBeforeDefinition)
+		return new NoEntryBefore(definition as NoEntryBeforeDefinition)
 	}
 }
 

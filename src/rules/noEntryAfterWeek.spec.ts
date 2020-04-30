@@ -7,7 +7,7 @@ describe("no entry after week rule", () => {
 		const theSrv = noEntryAfterWeek({ type: "noEntryAfterWeek" })
 		if (!theSrv) throw new Error("invalid definition")
 		const testDate = (date: Date) =>
-			theSrv({
+			theSrv.evaluate({
 				reservation: {
 					...minReservation,
 					hour: date
@@ -35,7 +35,7 @@ describe("no entry after week rule", () => {
 		})
 		if (!theSrv) throw new Error("invalid definition")
 		const testDate = (date: Date) =>
-			theSrv({ reservation: { ...minReservation, hour: date } })
+			theSrv.evaluate({ reservation: { ...minReservation, hour: date } })
 
 		it("rejects entries that are further away than Monday after the offset week", () => {
 			expect(

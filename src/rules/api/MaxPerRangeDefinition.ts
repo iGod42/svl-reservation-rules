@@ -10,5 +10,4 @@ export interface MaxPerRangeDefinition {
 	endAtHour?: Hour
 	startAtReservationDay?: boolean
 	limitForUser?: boolean
-	today?: Date
 }

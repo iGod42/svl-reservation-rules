@@ -1,25 +1,32 @@
-import { RuleEvaluation, RuleParser, RuleDefinition } from "./api"
+import { RuleParser, RuleDefinition, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions, Reservation } from "./api"
 
-const MESSAGE = "Die Stunde wurde bereits reserviert!"
+class NoOtherReservations implements Rule {
+	readonly performanceImpact: number = 10
 
-const noOtherReservations: RuleEvaluation = ({
-	reservation,
-	allReservations
-}) => {
-	if (!allReservations) throw new Error("allReservations is missing")
+	private message = () => "Die Stunde wurde bereits reserviert!"
 
-	return allReservations.find(
-		er =>
-			er.hour.getTime() === reservation.hour.getTime() &&
-			er.courtId === reservation.courtId
-	)
-		? MESSAGE
-		: undefined
+	private filter = (allReservations: Reservation[]) => (hour: Date, courtId: number) =>
+		allReservations.find(er =>
+			er.hour.getTime() === hour.getTime() &&
+			er.courtId === courtId)
+
+	evaluate = ({ reservation, allReservations }: RuleEvaluationOptions) =>
+		allReservations && this.filter(allReservations)(reservation.hour, reservation.courtId) ?
+			this.message() : undefined
+
+	evaluateBulk = ({ reservationsInfo, allReservations }: BulkRuleEvaluationOptions) => {
+		const relevantResInfo = reservationsInfo.filter(ri => !ri.violation)
+		allReservations?.forEach(res => {
+			const theResInfo = relevantResInfo.find(ri => ri.hour.getTime() === res.hour.getTime() && ri.courtId === res.courtId)
+			if (theResInfo)
+				theResInfo.violation = this.message()
+		})
+	}
 }
 
 const parse: RuleParser = (definition: RuleDefinition) => {
 	if (definition.type === "noOtherReservations") {
-		return noOtherReservations
+		return new NoOtherReservations
 	}
 }
 
