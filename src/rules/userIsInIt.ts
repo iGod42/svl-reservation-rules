@@ -1,5 +1,5 @@
 import { RuleParser, RuleDefinition, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./api"
-import {  findFirstMatchingUser } from './helpers'
+import { findFirstMatchingUser } from './helpers'
 
 class UserIsInIt implements Rule {
 	readonly performanceImpact: number = 5
@@ -10,8 +10,15 @@ class UserIsInIt implements Rule {
 		userId && !findFirstMatchingUser(reservation, [userId]) ?
 			this.message(userId) : undefined
 
-	// would not make any sense so do nothing
-	evaluateBulk = ({ }: BulkRuleEvaluationOptions) => { }
+	evaluateBulk = ({ reservationsInfo, userId }: BulkRuleEvaluationOptions) => {
+		if (!userId) return
+
+		reservationsInfo
+			.filter(ri => ri.reservation && !findFirstMatchingUser(ri.reservation, [userId]))
+			.forEach(ri => {
+				ri.violation = this.message(userId)
+			})
+	}
 }
 
 const parse: RuleParser = (definition: RuleDefinition) => {
