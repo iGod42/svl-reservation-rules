@@ -1,5 +1,5 @@
 import { Reservation, RuleDefinition } from "."
-import { ReservationInfo } from 'evaluation/ReservationInfo';
+import { ReservationInfo } from '../../evaluation/ReservationInfo'
 
 export interface RuleEvaluationOptions {
 	reservation: Reservation

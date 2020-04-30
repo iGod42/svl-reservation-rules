@@ -1,3 +1,4 @@
 export { parsers, parseRule, parseRules } from "./RuleParser"
 
-export { RuleDefinition, RuleEvaluation, RuleEvaluationOptions } from "./api"
+export { RuleDefinition, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./api"
+
