@@ -46,10 +46,14 @@ describe("no entry past hour", () => {
 		if (!rule) throw new Error("invalid definition")
 
 		it("applies cutoff for weekdays given", () => {
-			expect(typeof rule.evaluate(getReservation(18, exampleMonday))).toBe("string")
+			expect(typeof rule.evaluate(getReservation(18, exampleMonday))).toBe(
+				"string"
+			)
 		})
 		it("doesn't apply cutoff on weekdays not given", () => {
-			expect(rule.evaluate(getReservation(18, addDays(exampleMonday, 1)))).toBeFalsy()
+			expect(
+				rule.evaluate(getReservation(18, addDays(exampleMonday, 1)))
+			).toBeFalsy()
 		})
 	})
 })

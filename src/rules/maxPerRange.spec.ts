@@ -5,7 +5,7 @@ import { addDays } from "../tools"
 import minReservation from "./MinReservation"
 import { Reservation } from "./api"
 import { MaxPerRangeDefinition } from "./api/MaxPerRangeDefinition"
-import { ReservationInfo } from 'evaluation/ReservationInfo'
+import { ReservationInfo } from "evaluation/ReservationInfo"
 
 const getDate = (hour: number, now = new Date()) => {
 	return new Date(
@@ -23,12 +23,15 @@ const buildService = (definition: MaxPerRangeDefinition) => {
 	const rule = srv(definition)
 	if (!rule) throw new Error("invalid definition")
 
-	return (reservation: Reservation, allReservations: Reservation[], now?: Date) =>
-		rule.evaluate({ reservation, allReservations, now })
+	return (
+		reservation: Reservation,
+		allReservations: Reservation[],
+		now?: Date
+	) => rule.evaluate({ reservation, allReservations, now })
 }
 
 describe("max per range Rule", () => {
-	describe('single eval', () => {
+	describe("single eval", () => {
 		const aMonday = new Date(2019, 9, 14)
 		describe("startAtReservationDay -> to simply check the daily count", () => {
 			const theSrv = buildService({
@@ -125,13 +128,16 @@ describe("max per range Rule", () => {
 			})
 			it("works if is one reservation today", () => {
 				expect(
-					theSrv({ ...minReservation, hour: new Date(aMonday) }, [
-						{
-							...minReservation,
-							hour: new Date(aMonday)
-						}
-					],
-						aMonday)
+					theSrv(
+						{ ...minReservation, hour: new Date(aMonday) },
+						[
+							{
+								...minReservation,
+								hour: new Date(aMonday)
+							}
+						],
+						aMonday
+					)
 				).toBeFalsy()
 			})
 			it("fails if there are two reservation today", () => {
@@ -175,32 +181,38 @@ describe("max per range Rule", () => {
 			})
 			it("ignores reservations after tomorrow", () => {
 				expect(
-					theSrv({ ...minReservation, hour: new Date(aMonday) }, [
-						{
-							...minReservation,
-							hour: new Date(aMonday)
-						},
-						{
-							...minReservation,
-							hour: addDays(new Date(aMonday), 2)
-						}
-					],
-						aMonday)
+					theSrv(
+						{ ...minReservation, hour: new Date(aMonday) },
+						[
+							{
+								...minReservation,
+								hour: new Date(aMonday)
+							},
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 2)
+							}
+						],
+						aMonday
+					)
 				).toBeFalsy()
 			})
 			it("ignores reservations before today", () => {
 				expect(
-					theSrv({ ...minReservation, hour: new Date(aMonday) }, [
-						{
-							...minReservation,
-							hour: new Date(aMonday)
-						},
-						{
-							...minReservation,
-							hour: addDays(new Date(aMonday), -1)
-						}
-					],
-						aMonday)
+					theSrv(
+						{ ...minReservation, hour: new Date(aMonday) },
+						[
+							{
+								...minReservation,
+								hour: new Date(aMonday)
+							},
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), -1)
+							}
+						],
+						aMonday
+					)
 				).toBeFalsy()
 			})
 		})
@@ -226,13 +238,16 @@ describe("max per range Rule", () => {
 			})
 			it("works if there are reservations before the hour", () => {
 				expect(
-					theSrv({ ...minReservation, hour: getDate(18, aMonday) }, [
-						{
-							...minReservation,
-							hour: getDate(14, aMonday)
-						}
-					],
-						aMonday)
+					theSrv(
+						{ ...minReservation, hour: getDate(18, aMonday) },
+						[
+							{
+								...minReservation,
+								hour: getDate(14, aMonday)
+							}
+						],
+						aMonday
+					)
 				).toBeFalsy()
 			})
 			it("fails if there are reservations after the hour", () => {
@@ -254,13 +269,16 @@ describe("max per range Rule", () => {
 			})
 			it("works if there are reservations after the hour but outside of daterange", () => {
 				expect(
-					theSrv({ ...minReservation, hour: getDate(18, aMonday) }, [
-						{
-							...minReservation,
-							hour: addDays(getDate(14, aMonday), 1)
-						}
-					],
-						aMonday)
+					theSrv(
+						{ ...minReservation, hour: getDate(18, aMonday) },
+						[
+							{
+								...minReservation,
+								hour: addDays(getDate(14, aMonday), 1)
+							}
+						],
+						aMonday
+					)
 				).toBeFalsy()
 			})
 			it("allows reservations tomorrow before 17:00 even if I have 2 at 17:00 today", () => {
@@ -311,24 +329,30 @@ describe("max per range Rule", () => {
 			})
 			it("works if there are only reservations before the offset", () => {
 				expect(
-					theSrv({ ...minReservation, hour: new Date(2019, 9, 16) }, [
-						{
-							...minReservation,
-							hour: new Date(2019, 9, 15)
-						}
-					],
-						new Date(2019, 9, 14))
+					theSrv(
+						{ ...minReservation, hour: new Date(2019, 9, 16) },
+						[
+							{
+								...minReservation,
+								hour: new Date(2019, 9, 15)
+							}
+						],
+						new Date(2019, 9, 14)
+					)
 				).toBeFalsy()
 			})
 			it("works if there are only reservations after this week", () => {
 				expect(
-					theSrv({ ...minReservation, hour: new Date(2019, 9, 16) }, [
-						{
-							...minReservation,
-							hour: new Date(2019, 9, 21)
-						}
-					],
-						new Date(2019, 9, 14))
+					theSrv(
+						{ ...minReservation, hour: new Date(2019, 9, 16) },
+						[
+							{
+								...minReservation,
+								hour: new Date(2019, 9, 21)
+							}
+						],
+						new Date(2019, 9, 14)
+					)
 				)
 			})
 
@@ -378,8 +402,8 @@ describe("max per range Rule", () => {
 			})
 		})
 	})
-	describe('bulk eval', () => {
-		describe('static', () => {
+	describe("bulk eval", () => {
+		describe("static", () => {
 			const rule = srv({
 				type: "maxPerRange",
 				maximum: 1,
@@ -387,22 +411,23 @@ describe("max per range Rule", () => {
 				limitForUser: false,
 				dayRange: 1
 			})
-			it('ignores everything that is not covered by rule', () => {
+			it("ignores everything that is not covered by rule", () => {
 				const okRi: ReservationInfo = {
 					hour: new Date(2020, 0, 2),
 					courtId: 1
 				}
 				rule?.evaluateBulk({
 					reservationsInfo: [okRi],
-					allReservations: [{
-						...minReservation,
-						courtId: 1,
-						hour: new Date(2020, 0, 1),
-					}],
+					allReservations: [
+						{
+							...minReservation,
+							courtId: 1,
+							hour: new Date(2020, 0, 1)
+						}
+					],
 					now: new Date(2020, 0, 1)
 				})
-
-				expect(okRi.violation).toBeUndefined
+				expect(okRi.violation).toBeUndefined()
 			})
 			it("set's validation errors if rule is violated", () => {
 				const ri: ReservationInfo = {
@@ -411,11 +436,13 @@ describe("max per range Rule", () => {
 				}
 				rule?.evaluateBulk({
 					reservationsInfo: [ri],
-					allReservations: [{
-						...minReservation,
-						courtId: 1,
-						hour: new Date(2020, 0, 2),
-					}],
+					allReservations: [
+						{
+							...minReservation,
+							courtId: 1,
+							hour: new Date(2020, 0, 2)
+						}
+					],
 					now: new Date(2020, 0, 2)
 				})
 
@@ -432,17 +459,19 @@ describe("max per range Rule", () => {
 				}
 				rule?.evaluateBulk({
 					reservationsInfo: [okRi, ri],
-					allReservations: [{
-						...minReservation,
-						courtId: 1,
-						hour: new Date(2020, 0, 2),
-					}],
+					allReservations: [
+						{
+							...minReservation,
+							courtId: 1,
+							hour: new Date(2020, 0, 2)
+						}
+					],
 					now: new Date(2020, 0, 2)
 				})
-				expect(okRi.violation).toBeUndefined
+				expect(okRi.violation).toBeUndefined()
 			})
 		})
-		describe('dynamic', () => {
+		describe("dynamic", () => {
 			const rule = srv({
 				type: "maxPerRange",
 				maximum: 1,
@@ -458,11 +487,13 @@ describe("max per range Rule", () => {
 				}
 				rule?.evaluateBulk({
 					reservationsInfo: [ri],
-					allReservations: [{
-						...minReservation,
-						courtId: 1,
-						hour: new Date(2020, 0, 2),
-					}]
+					allReservations: [
+						{
+							...minReservation,
+							courtId: 1,
+							hour: new Date(2020, 0, 2)
+						}
+					]
 				})
 
 				expect(typeof ri.violation).toBe("string")
@@ -478,13 +509,15 @@ describe("max per range Rule", () => {
 				}
 				rule?.evaluateBulk({
 					reservationsInfo: [okRi, ri],
-					allReservations: [{
-						...minReservation,
-						courtId: 1,
-						hour: new Date(2020, 0, 2),
-					}]
+					allReservations: [
+						{
+							...minReservation,
+							courtId: 1,
+							hour: new Date(2020, 0, 2)
+						}
+					]
 				})
-				expect(okRi.violation).toBeUndefined
+				expect(okRi.violation).toBeUndefined()
 			})
 		})
 	})

@@ -1,4 +1,9 @@
-import { RuleParser, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./api"
+import {
+	RuleParser,
+	Rule,
+	RuleEvaluationOptions,
+	BulkRuleEvaluationOptions
+} from "./api"
 
 class LimitToCourts implements Rule {
 	readonly performanceImpact: number = 3
@@ -8,15 +13,16 @@ class LimitToCourts implements Rule {
 	constructor(
 		courtIds: number[],
 		afterHour = 0,
-		weekDays = [0, 1, 2, 3, 4, 5, 6]) {
-
+		weekDays = [0, 1, 2, 3, 4, 5, 6]
+	) {
 		this.courtIds = courtIds
 		this.afterHour = afterHour
 		this.weekDays = weekDays
 	}
 
-	private message = (court: number | string) => `Keine Reservierung von Platz ${court}${
-		this.afterHour > 0 ? ` nach ${this.afterHour} Uhr` : ""
+	private message = (court: number | string) =>
+		`Keine Reservierung von Platz ${court}${
+			this.afterHour > 0 ? ` nach ${this.afterHour} Uhr` : ""
 		} erlaubt`
 
 	private filter = (std: Date, court: number) =>
@@ -27,17 +33,15 @@ class LimitToCourts implements Rule {
 	evaluate = ({ reservation }: RuleEvaluationOptions) => {
 		const std = reservation.hour
 		const court = reservation.courtId
-		if (this.filter(std, court))
-			return this.message(court)
+		if (this.filter(std, court)) return this.message(court)
 	}
 
 	evaluateBulk = ({ reservationsInfo }: BulkRuleEvaluationOptions) => {
 		reservationsInfo
 			.filter(ri => !ri.violation)
 			.filter(ri => this.filter(ri.hour, ri.courtId))
-			.forEach(ri => ri.violation = this.message(ri.courtId))
+			.forEach(ri => (ri.violation = this.message(ri.courtId)))
 	}
-
 }
 
 const parse: RuleParser = rule => {

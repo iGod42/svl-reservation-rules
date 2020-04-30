@@ -1,6 +1,12 @@
 import { NoEntryBeforeDefinition } from "./api/NoEntryBeforeDefinition"
-import { RuleParser, RuleDefinition, Rule, RuleEvaluationOptions, BulkRuleEvaluationOptions } from "./api"
-import { addDays } from '../tools'
+import {
+	RuleParser,
+	RuleDefinition,
+	Rule,
+	RuleEvaluationOptions,
+	BulkRuleEvaluationOptions
+} from "./api"
+import { addDays } from "../tools"
 
 class NoEntryBefore implements Rule {
 	readonly performanceImpact: number = 1
@@ -10,12 +16,21 @@ class NoEntryBefore implements Rule {
 		this.definition = definition
 	}
 
-	private message = () => this.definition.messageOverride || "Eintragen erst nach der angefangenen Stunde möglich"
+	private message = () =>
+		this.definition.messageOverride ||
+		"Eintragen erst nach der angefangenen Stunde möglich"
 
-	private filter = (now = new Date()) =>
-		(compDate: Date) => compDate < addDays(
-			new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1),
-			-this.definition.dayOffset || 0)
+	private filter = (now = new Date()) => (compDate: Date) =>
+		compDate <
+		addDays(
+			new Date(
+				now.getFullYear(),
+				now.getMonth(),
+				now.getDate(),
+				now.getHours() + 1
+			),
+			-this.definition.dayOffset || 0
+		)
 
 	evaluate = ({ reservation, now }: RuleEvaluationOptions) =>
 		this.filter(now)(reservation.hour) ? this.message() : undefined
@@ -23,7 +38,7 @@ class NoEntryBefore implements Rule {
 	evaluateBulk = ({ reservationsInfo, now }: BulkRuleEvaluationOptions) => {
 		reservationsInfo
 			.filter(ri => !ri.violation && this.filter(now)(ri.hour))
-			.forEach(ri => ri.violation = this.message())
+			.forEach(ri => (ri.violation = this.message()))
 	}
 }
 

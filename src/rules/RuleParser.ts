@@ -29,8 +29,6 @@ export const parseRule = (ruleDefinition: RuleDefinition): Rule => {
 	throw new Error("Invalid Rule Definition: " + JSON.stringify(ruleDefinition))
 }
 
-export const parseRules = (
-	ruleDefinitions: RuleDefinition[]
-): Rule[] => {
+export const parseRules = (ruleDefinitions: RuleDefinition[]): Rule[] => {
 	return ruleDefinitions.map(parseRule)
 }

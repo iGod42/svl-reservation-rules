@@ -1,17 +1,17 @@
 import { Reservation, RuleDefinition } from "."
-import { ReservationInfo } from '../../evaluation/ReservationInfo'
+import { ReservationInfo } from "../../evaluation/ReservationInfo"
 
 export interface RuleEvaluationOptions {
 	reservation: Reservation
 	allReservations?: Reservation[]
-	userId?: string,
+	userId?: string
 	now?: Date
 }
 
 export interface BulkRuleEvaluationOptions {
-	reservationsInfo: ReservationInfo[],
-	allReservations?: Reservation[],
-	userId?: string,
+	reservationsInfo: ReservationInfo[]
+	allReservations?: Reservation[]
+	userId?: string
 	now?: Date
 }
 

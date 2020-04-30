@@ -1,7 +1,7 @@
 import limitToCourts from "./limitToCourts"
 import minReservation from "./MinReservation"
 import { Reservation } from "./api"
-import { ReservationInfo } from 'evaluation/ReservationInfo'
+import { ReservationInfo } from "evaluation/ReservationInfo"
 
 const getDate = (hour: number, minute = 0) => {
 	const now = new Date()
@@ -22,7 +22,8 @@ describe("limitToCourts", () => {
 			const rule = limitToCourts({ type: "limitToCourts", courtIds: [1, 2] })
 			if (!rule) throw new Error("parsing failed")
 
-			const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
+			const theSrv = (reservation: Reservation) =>
+				rule.evaluate({ reservation })
 
 			it("allows reservations for the first court in the list", () => {
 				expect(
@@ -61,7 +62,8 @@ describe("limitToCourts", () => {
 				afterHour: cutoffTime
 			})
 			if (!rule) throw new Error("parsing failed")
-			const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
+			const theSrv = (reservation: Reservation) =>
+				rule.evaluate({ reservation })
 
 			it("rejects at exactly cutoff time ", () => {
 				expect(
@@ -99,7 +101,8 @@ describe("limitToCourts", () => {
 				weekDays: [1]
 			})
 			if (!rule) throw new Error("parsing failed")
-			const theSrv = (reservation: Reservation) => rule.evaluate({ reservation })
+			const theSrv = (reservation: Reservation) =>
+				rule.evaluate({ reservation })
 
 			const exampleMonday = new Date(2020, 0, 13) // day 1
 			const exampleTuesday = new Date(2020, 0, 14) // day 2

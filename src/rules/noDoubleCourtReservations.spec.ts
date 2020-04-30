@@ -1,7 +1,7 @@
 import noDoubleCourtReservations from "./noDoubleCourtReservations"
 import minReservation from "./MinReservation"
 import { Reservation } from "./api"
-import { ReservationInfo } from 'evaluation/ReservationInfo'
+import { ReservationInfo } from "evaluation/ReservationInfo"
 
 describe("no reservations on another court rule", () => {
 	const basicDetails = {
@@ -18,7 +18,7 @@ describe("no reservations on another court rule", () => {
 
 	const rule = noDoubleCourtReservations({ type: "noDoubleCourtReservation" })
 	if (!rule) throw new Error("invalid definition")
-	describe('single', () => {
+	describe("single", () => {
 		const srv = (reservation: Reservation, allReservations: Reservation[]) =>
 			rule.evaluate({ reservation, allReservations })
 
@@ -48,7 +48,7 @@ describe("no reservations on another court rule", () => {
 		})
 	})
 
-	describe('bulk', () => {
+	describe("bulk", () => {
 		const hour = new Date(2020, 0, 1, 10)
 		const okRi: ReservationInfo = {
 			courtId: 1,
@@ -58,21 +58,22 @@ describe("no reservations on another court rule", () => {
 			courtId: 1,
 			hour: hour
 		}
-		const userId = 'dummy'
+		const userId = "dummy"
 
 		rule.evaluateBulk({
 			reservationsInfo: [okRi, notOkRi],
-			allReservations: [{
-				courtId: 3,
-				hour: hour,
-				players: [],
-				reservedBy: { id: userId }
-			}],
+			allReservations: [
+				{
+					courtId: 3,
+					hour: hour,
+					players: [],
+					reservedBy: { id: userId }
+				}
+			],
 			userId
 		})
-		it('sets message to doubly reserved', () => {
-			console.log(notOkRi.violation)
-			expect(typeof notOkRi.violation).toBe('string')
+		it("sets message to doubly reserved", () => {
+			expect(typeof notOkRi.violation).toBe("string")
 		})
 		it("doesn't set on ok info", () => {
 			expect(okRi.violation).toBeUndefined()

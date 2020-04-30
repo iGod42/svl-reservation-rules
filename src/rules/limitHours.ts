@@ -1,8 +1,14 @@
 import { LimitHoursDefinition } from "./api/LimitHoursDefinition"
-import { RuleDefinition, RuleEvaluationOptions, RuleParser, Rule, BulkRuleEvaluationOptions } from "./api"
+import {
+	RuleDefinition,
+	RuleEvaluationOptions,
+	RuleParser,
+	Rule,
+	BulkRuleEvaluationOptions
+} from "./api"
 
 class LimitHours implements Rule {
-	private readonly definition;
+	private readonly definition
 
 	readonly performanceImpact = 1
 
@@ -23,15 +29,14 @@ class LimitHours implements Rule {
 		date.getMilliseconds() !== 0
 
 	evaluate = ({ reservation }: RuleEvaluationOptions) => {
-		if (this.checkDate(reservation.hour))
-			return this.errorMessage()
+		if (this.checkDate(reservation.hour)) return this.errorMessage()
 	}
 
 	evaluateBulk = ({ reservationsInfo }: BulkRuleEvaluationOptions) => {
 		reservationsInfo
 			.filter(ri => !ri.violation) // no need to check again if there is already an error
 			.filter(ri => this.checkDate(ri.hour))
-			.forEach(ri => ri.violation = this.errorMessage())
+			.forEach(ri => (ri.violation = this.errorMessage()))
 	}
 }
 
