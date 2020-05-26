@@ -7,11 +7,14 @@ export const findFirstMatchingUser = (
 	userIds: string[]
 ) => {
 	//hack assuming last one is the one reserving
-	const filterUids = userIds.slice(0, -1)
+	const filterUids = userIds
+		.slice(0, -1)
 		.filter(uid => !ignoreIds.includes(uid))
 		.concat(userIds.slice(-1))
-	return filterUids.find(id => reservation.reservedBy.id === id) ||
+	return (
+		filterUids.find(id => reservation.reservedBy.id === id) ||
 		filterUids.find(id => reservation.players.find(player => player.id === id))
+	)
 }
 
 export const getFilterForSameUser = (bRes: Reservation) => (
