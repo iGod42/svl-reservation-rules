@@ -13,7 +13,7 @@ import {
 import { ReservationInfo } from "../evaluation/ReservationInfo"
 
 class MaxPerRange implements Rule {
-	private readonly definition
+	private readonly definition: Required<MaxPerRangeDefinition>
 	readonly performanceImpact: number
 	private readonly dtf
 
@@ -25,6 +25,7 @@ class MaxPerRange implements Rule {
 			endAtHour: 24,
 			applyToWeekdays: [0, 1, 2, 3, 4, 5, 6],
 			limitForUser: true,
+			startAtReservationDay: false,
 			...definition
 		}
 
@@ -44,10 +45,10 @@ class MaxPerRange implements Rule {
 
 		theMessage +=
 			(endDateDisplay.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24) >
-			1
+				1
 				? ` von ${this.formatDate(startDate)} bis ${this.formatDate(
-						endDateDisplay
-				  )}`
+					endDateDisplay
+				)}`
 				: ` am ${this.formatDate(startDate)}`
 
 		if (this.definition.startAtHour !== 0 && this.definition.endAtHour !== 24)
@@ -127,9 +128,9 @@ class MaxPerRange implements Rule {
 			endDate
 		)
 			? this.message(
-					this.getStartDate(reservation.hour, now),
-					this.getEndDate(reservation.hour, now)
-			  )
+				this.getStartDate(reservation.hour, now),
+				this.getEndDate(reservation.hour, now)
+			)
 			: undefined
 	}
 
