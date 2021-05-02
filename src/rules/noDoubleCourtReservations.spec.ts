@@ -17,6 +17,7 @@ describe("no reservations on another court rule", () => {
 	}
 
 	const rule = noDoubleCourtReservations({ type: "noDoubleCourtReservation" })
+
 	if (!rule) throw new Error("invalid definition")
 	describe("single", () => {
 		const srv = (reservation: Reservation, allReservations: Reservation[]) =>
@@ -45,6 +46,39 @@ describe("no reservations on another court rule", () => {
 					}
 				])
 			).toBeFalsy()
+		})
+
+		describe('max 2', () => {
+
+			const max2 = noDoubleCourtReservations({ type: "noDoubleCourtReservation", maxCourts: 2 })
+			it('allows one other reservation', () => {
+				expect(
+					max2?.evaluate({
+						reservation: dummyReservation, allReservations: [
+							{
+								...dummyReservation,
+								courtId: 2
+							}
+						]
+					})
+				).toBeFalsy()
+			})
+			it('does not allow two other reservations', () => {
+				expect(
+					typeof max2?.evaluate({
+						reservation: dummyReservation, allReservations: [
+							{
+								...dummyReservation,
+								courtId: 2
+							},
+							{
+								...dummyReservation,
+								courtId: 3
+							}
+						]
+					})
+				).toBe('string')
+			})
 		})
 	})
 

@@ -1,4 +1,5 @@
 import { findFirstMatchingUser } from "./helpers"
+import { NoDoubleCourtReservationDefinition } from "./api/NoDoubleCourtReservationDefinition"
 import {
 	RuleParser,
 	RuleDefinition,
@@ -6,21 +7,32 @@ import {
 	Reservation,
 	RuleEvaluationOptions,
 	BulkRuleEvaluationOptions
+
 } from "./api"
 
 class NoDoubleCourtReservations implements Rule {
 	readonly performanceImpact: number = 20
+	private readonly definition: Required<NoDoubleCourtReservationDefinition>
 
 	private readonly message = (userId: string, myUserId?: string) =>
-		(myUserId === userId ? "Du hast" : `'${userId}' hat`) +
-		" bereits zur selben Stunde auf einem anderen Platz eingetragen"
+		this.definition.maxCourts === 1 ?
+			(myUserId === userId ? "Du hast" : `'${userId}' hat`) +
+			" bereits zur selben Stunde auf einem anderen Platz eingetragen"
+			: `Du kannst max ${this.definition.maxCourts} Plätze gleichzeitig reservieren`
+
+	constructor(definition: NoDoubleCourtReservationDefinition) {
+		this.definition = {
+			maxCourts: 1,
+			...definition
+		}
+	}
 
 	evaluate = ({
 		reservation,
 		allReservations,
 		userId
 	}: RuleEvaluationOptions) => {
-		const overlappingUser = allReservations
+		const overlappingUsers = allReservations
 			?.filter(
 				aRes =>
 					aRes.hour.getTime() === reservation.hour.getTime() &&
@@ -32,9 +44,9 @@ class NoDoubleCourtReservations implements Rule {
 					reservation.players.concat(reservation.reservedBy).map(u => u.id)
 				)
 			)
-			.find(a => !!a)
+			.filter(a => !!a)
 
-		if (overlappingUser) return this.message(overlappingUser, userId)
+		if (overlappingUsers && overlappingUsers.length >= this.definition.maxCourts) return this.message(overlappingUsers[0] || "Du", userId)
 	}
 
 	evaluateBulk = ({
@@ -59,10 +71,10 @@ class NoDoubleCourtReservations implements Rule {
 		reservationsInfo.forEach(ri => {
 			const otherRes = grouped[ri.hour.getTime()]
 			if (otherRes) {
-				const match = otherRes
+				const matches = otherRes
 					.map(or => findFirstMatchingUser(or, [userId]))
-					.find(a => !!a)
-				if (match) ri.violation = this.message(match, userId)
+					.filter(a => !!a)
+				if (matches && matches.length >= this.definition.maxCourts) ri.violation = this.message(matches[0] || "Du", userId)
 			}
 		})
 	}
@@ -70,7 +82,7 @@ class NoDoubleCourtReservations implements Rule {
 
 const parse: RuleParser = (definition: RuleDefinition) => {
 	if (definition.type === "noDoubleCourtReservation") {
-		return new NoDoubleCourtReservations()
+		return new NoDoubleCourtReservations(definition)
 	}
 }
 
