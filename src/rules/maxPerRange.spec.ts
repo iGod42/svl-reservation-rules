@@ -401,6 +401,86 @@ describe("max per range Rule", () => {
 				})
 			})
 		})
+
+		describe("max 2 per week starting next week", () => {
+			const theSrv = buildService({
+				type: "maxPerRange",
+				maximum: 2,
+				dayOffset: "SOW",
+				dayRange: 7,
+				offsetStart: "start-of-next-week",
+				limitForUser: false,
+				startAtReservationDay: true
+			})
+			it("is ignored for the current week", () => {
+				expect(
+					theSrv(
+						{ ...minReservation, hour: addDays(new Date(aMonday), 2) },
+						[
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 1)
+							},
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 0)
+							}
+						],
+						aMonday
+					)
+				).toBeFalsy()
+			})
+			it("allows 2 per week starting next week", () => {
+				expect(
+					theSrv(
+						{ ...minReservation, hour: addDays(new Date(aMonday), 9) },
+						[
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 8)
+							}
+						],
+						aMonday
+					)
+				).toBeFalsy()
+			})
+			it("rejects more than 2 next week", () => {
+				expect(
+					typeof theSrv(
+						{ ...minReservation, hour: addDays(new Date(aMonday), 9) },
+						[
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 8)
+							},
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 7)
+							}
+						],
+						aMonday
+					)
+				).toBe("string")
+			})
+			it("rejects more than 2 the week after next week", () => {
+				expect(
+					typeof theSrv(
+						{ ...minReservation, hour: addDays(new Date(aMonday), 16) },
+						[
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 15)
+							},
+							{
+								...minReservation,
+								hour: addDays(new Date(aMonday), 14)
+							}
+						],
+						aMonday
+					)
+				).toBe("string")
+			})
+		})
 	})
 	describe("bulk eval", () => {
 		describe("static", () => {
