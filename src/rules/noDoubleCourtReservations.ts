@@ -7,7 +7,6 @@ import {
 	Reservation,
 	RuleEvaluationOptions,
 	BulkRuleEvaluationOptions
-
 } from "./api"
 
 class NoDoubleCourtReservations implements Rule {
@@ -15,9 +14,9 @@ class NoDoubleCourtReservations implements Rule {
 	private readonly definition: Required<NoDoubleCourtReservationDefinition>
 
 	private readonly message = (userId: string, myUserId?: string) =>
-		this.definition.maxCourts === 1 ?
-			(myUserId === userId ? "Du hast" : `'${userId}' hat`) +
-			" bereits zur selben Stunde auf einem anderen Platz eingetragen"
+		this.definition.maxCourts === 1
+			? (myUserId === userId ? "Du hast" : `'${userId}' hat`) +
+			  " bereits zur selben Stunde auf einem anderen Platz eingetragen"
 			: `Du kannst max ${this.definition.maxCourts} Plätze gleichzeitig reservieren`
 
 	constructor(definition: NoDoubleCourtReservationDefinition) {
@@ -46,7 +45,11 @@ class NoDoubleCourtReservations implements Rule {
 			)
 			.filter(a => !!a)
 
-		if (overlappingUsers && overlappingUsers.length >= this.definition.maxCourts) return this.message(overlappingUsers[0] || "Du", userId)
+		if (
+			overlappingUsers &&
+			overlappingUsers.length >= this.definition.maxCourts
+		)
+			return this.message(overlappingUsers[0] || "Du", userId)
 	}
 
 	evaluateBulk = ({
@@ -74,7 +77,8 @@ class NoDoubleCourtReservations implements Rule {
 				const matches = otherRes
 					.map(or => findFirstMatchingUser(or, [userId]))
 					.filter(a => !!a)
-				if (matches && matches.length >= this.definition.maxCourts) ri.violation = this.message(matches[0] || "Du", userId)
+				if (matches && matches.length >= this.definition.maxCourts)
+					ri.violation = this.message(matches[0] || "Du", userId)
 			}
 		})
 	}

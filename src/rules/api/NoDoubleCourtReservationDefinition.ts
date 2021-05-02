@@ -1,4 +1,4 @@
 export interface NoDoubleCourtReservationDefinition {
-	type: "noDoubleCourtReservation",
+	type: "noDoubleCourtReservation"
 	maxCourts?: number
 }

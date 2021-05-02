@@ -46,10 +46,10 @@ class MaxPerRange implements Rule {
 
 		theMessage +=
 			(endDateDisplay.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24) >
-				1
+			1
 				? ` von ${this.formatDate(startDate)} bis ${this.formatDate(
-					endDateDisplay
-				)}`
+						endDateDisplay
+				  )}`
 				: ` am ${this.formatDate(startDate)}`
 
 		if (this.definition.startAtHour !== 0 && this.definition.endAtHour !== 24)
@@ -95,7 +95,7 @@ class MaxPerRange implements Rule {
 		allReservations: Reservation[] = [],
 		userIds: string[],
 		startDate: Date,
-		endDate: Date,
+		endDate: Date
 	) => {
 		return (
 			allReservations
@@ -111,7 +111,7 @@ class MaxPerRange implements Rule {
 	private getBeginActiveDate = (now: Date): Date | undefined => {
 		if (this.definition.offsetStart === "no") return
 
-		if (this.definition.offsetStart === 'start-of-next-week')
+		if (this.definition.offsetStart === "start-of-next-week")
 			return addDays(getBeginningOfWeek(now), 7)
 
 		return addDays(trimTimeComponent(now), this.definition.offsetStart)
@@ -127,8 +127,7 @@ class MaxPerRange implements Rule {
 		const beginActiveDate = this.getBeginActiveDate(now)
 
 		// if hour to reserve is before active date -> no evaluation necessary as rule is not active
-		if (reservation.hour.getTime() < (beginActiveDate?.getTime() || 0))
-			return
+		if (reservation.hour.getTime() < (beginActiveDate?.getTime() || 0)) return
 
 		if (reservation.hour < startDate || reservation.hour >= endDate) return
 
@@ -145,9 +144,9 @@ class MaxPerRange implements Rule {
 			endDate
 		)
 			? this.message(
-				this.getStartDate(reservation.hour, now),
-				this.getEndDate(reservation.hour, now)
-			)
+					this.getStartDate(reservation.hour, now),
+					this.getEndDate(reservation.hour, now)
+			  )
 			: undefined
 	}
 

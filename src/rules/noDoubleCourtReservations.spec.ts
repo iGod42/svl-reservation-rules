@@ -48,13 +48,16 @@ describe("no reservations on another court rule", () => {
 			).toBeFalsy()
 		})
 
-		describe('max 2', () => {
-
-			const max2 = noDoubleCourtReservations({ type: "noDoubleCourtReservation", maxCourts: 2 })
-			it('allows one other reservation', () => {
+		describe("max 2", () => {
+			const max2 = noDoubleCourtReservations({
+				type: "noDoubleCourtReservation",
+				maxCourts: 2
+			})
+			it("allows one other reservation", () => {
 				expect(
 					max2?.evaluate({
-						reservation: dummyReservation, allReservations: [
+						reservation: dummyReservation,
+						allReservations: [
 							{
 								...dummyReservation,
 								courtId: 2
@@ -63,10 +66,11 @@ describe("no reservations on another court rule", () => {
 					})
 				).toBeFalsy()
 			})
-			it('does not allow two other reservations', () => {
+			it("does not allow two other reservations", () => {
 				expect(
 					typeof max2?.evaluate({
-						reservation: dummyReservation, allReservations: [
+						reservation: dummyReservation,
+						allReservations: [
 							{
 								...dummyReservation,
 								courtId: 2
@@ -77,7 +81,7 @@ describe("no reservations on another court rule", () => {
 							}
 						]
 					})
-				).toBe('string')
+				).toBe("string")
 			})
 		})
 	})
