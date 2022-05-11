@@ -24,7 +24,8 @@ class NoEntryAfterweek implements Rule {
 			)
 		)
 
-	private message = () =>
+	private message = () => this.definition.offsetWeeks === 1 ?
+		"Du darfst nur bis in die nächste Woche eintragen" : 
 		`Du darfst max ${this.definition.offsetWeeks} Woche${
 			this.definition.offsetWeeks > 1 ? "n" : ""
 		} in die Zukunft eintragen`
