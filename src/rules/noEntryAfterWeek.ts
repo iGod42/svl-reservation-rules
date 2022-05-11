@@ -32,7 +32,7 @@ class NoEntryAfterweek implements Rule {
 			  } in die Zukunft eintragen`
 
 	evaluate = ({ reservation, now }: RuleEvaluationOptions) => {
-		return this.getCutoffDate(now) < reservation.hour
+		return this.getCutoffDate(now) <= reservation.hour
 			? this.message()
 			: undefined
 	}
